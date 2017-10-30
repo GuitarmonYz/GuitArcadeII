@@ -1,0 +1,1312 @@
+fileFormatVersion: 2
+guid: abba34bdfc3a644a49bf7523d8c0773a
+timeCreated: 1505876772
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: patapon_sprites_total_0
+    21300002: patapon_sprites_total_1
+    21300004: patapon_sprites_total_2
+    21300006: patapon_sprites_total_3
+    21300008: patapon_sprites_total_4
+    21300010: patapon_sprites_total_5
+    21300012: patapon_sprites_total_6
+    21300014: patapon_sprites_total_7
+    21300016: patapon_sprites_total_8
+    21300018: patapon_sprites_total_9
+    21300020: patapon_sprites_total_10
+    21300022: patapon_sprites_total_11
+    21300024: patapon_sprites_total_12
+    21300026: patapon_sprites_total_13
+    21300028: patapon_sprites_total_14
+    21300030: patapon_sprites_total_15
+    21300032: patapon_sprites_total_16
+    21300034: patapon_sprites_total_17
+    21300036: patapon_sprites_total_18
+    21300038: patapon_sprites_total_19
+    21300040: patapon_sprites_total_20
+    21300042: patapon_sprites_total_21
+    21300044: patapon_sprites_total_22
+    21300046: patapon_sprites_total_23
+    21300048: patapon_sprites_total_24
+    21300050: patapon_sprites_total_25
+    21300052: patapon_sprites_total_26
+    21300054: patapon_sprites_total_27
+    21300056: patapon_sprites_total_28
+    21300058: patapon_sprites_total_29
+    21300060: patapon_sprites_total_30
+    21300062: patapon_sprites_total_31
+    21300064: patapon_sprites_total_32
+    21300066: patapon_sprites_total_33
+    21300068: patapon_sprites_total_34
+    21300070: patapon_sprites_total_35
+    21300072: patapon_sprites_total_36
+    21300074: patapon_sprites_total_37
+    21300076: patapon_sprites_total_38
+    21300078: patapon_sprites_total_39
+    21300080: patapon_sprites_total_40
+    21300082: patapon_sprites_total_41
+    21300084: patapon_sprites_total_42
+    21300086: patapon_sprites_total_43
+    21300088: patapon_sprites_total_44
+    21300090: patapon_sprites_total_45
+    21300092: patapon_sprites_total_46
+    21300094: patapon_sprites_total_47
+    21300096: patapon_sprites_total_48
+    21300098: patapon_sprites_total_49
+    21300100: patapon_sprites_total_50
+    21300102: patapon_sprites_total_51
+    21300104: patapon_sprites_total_52
+    21300106: patapon_sprites_total_53
+    21300108: patapon_sprites_total_54
+    21300110: patapon_sprites_total_55
+    21300112: patapon_sprites_total_56
+    21300114: patapon_sprites_total_57
+    21300116: patapon_sprites_total_58
+    21300118: patapon_sprites_total_59
+    21300120: patapon_sprites_total_60
+    21300122: patapon_sprites_total_61
+    21300124: patapon_sprites_total_62
+    21300126: patapon_sprites_total_63
+    21300128: patapon_sprites_total_64
+    21300130: patapon_sprites_total_65
+    21300132: patapon_sprites_total_66
+    21300134: patapon_sprites_total_67
+    21300136: patapon_sprites_total_68
+    21300138: patapon_sprites_total_69
+    21300140: patapon_sprites_total_70
+    21300142: patapon_sprites_total_71
+    21300144: patapon_sprites_total_72
+    21300146: patapon_sprites_total_73
+    21300148: patapon_sprites_total_74
+    21300150: patapon_sprites_total_75
+    21300152: patapon_sprites_total_76
+    21300154: patapon_sprites_total_77
+    21300156: patapon_sprites_total_78
+    21300158: patapon_sprites_total_79
+    21300160: patapon_sprites_total_80
+    21300162: patapon_sprites_total_81
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: patapon_sprites_total_0
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 489
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_1
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 489
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_2
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 489
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_3
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 489
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_4
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 489
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_5
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 489
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_6
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 481
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_7
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 467
+        width: 13
+        height: 21
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_8
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 477
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_9
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 477
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_10
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 477
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_11
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 448
+        width: 8
+        height: 40
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_12
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 455
+        width: 5
+        height: 23
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_13
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 448
+        width: 8
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_14
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 448
+        width: 5
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_15
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 448
+        width: 5
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_16
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 448
+        width: 5
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_17
+      rect:
+        serializedVersion: 2
+        x: 219
+        y: 448
+        width: 5
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_18
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 448
+        width: 8
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_19
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 455
+        width: 6
+        height: 23
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_20
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 475
+        width: 13
+        height: 12
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_21
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 476
+        width: 23
+        height: 12
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_22
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 467
+        width: 6
+        height: 6
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_23
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 467
+        width: 9
+        height: 6
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_24
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 466
+        width: 4
+        height: 6
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_25
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 465
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_26
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 465
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_27
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 465
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_28
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 465
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_29
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 442
+        width: 11
+        height: 29
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_30
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 456
+        width: 11
+        height: 18
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_31
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 457
+        width: 7
+        height: 6
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_32
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 456
+        width: 11
+        height: 8
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_33
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 445
+        width: 34
+        height: 20
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_34
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 451
+        width: 15
+        height: 13
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_35
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 438
+        width: 15
+        height: 23
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_36
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 441
+        width: 11
+        height: 14
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_37
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_38
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_39
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_40
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_41
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_42
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_43
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_44
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_45
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 442
+        width: 11
+        height: 11
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_46
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 426
+        width: 13
+        height: 17
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_47
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 428
+        width: 13
+        height: 25
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_48
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 365
+        width: 171
+        height: 64
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_49
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 405
+        width: 13
+        height: 25
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_50
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 425
+        width: 19
+        height: 14
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_51
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 387
+        width: 18
+        height: 44
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_52
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 393
+        width: 13
+        height: 33
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_53
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 400
+        width: 13
+        height: 36
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_54
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 368
+        width: 9
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_55
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 384
+        width: 11
+        height: 17
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_56
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 392
+        width: 18
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_57
+      rect:
+        serializedVersion: 2
+        x: 664
+        y: 375
+        width: 20
+        height: 23
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_58
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 348
+        width: 17
+        height: 34
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_59
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 340
+        width: 18
+        height: 44
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_60
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 347
+        width: 45
+        height: 28
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_61
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 373
+        width: 11
+        height: 15
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_62
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 374
+        width: 19
+        height: 15
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_63
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 329
+        width: 198
+        height: 32
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_64
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 354
+        width: 15
+        height: 15
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_65
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 331
+        width: 5
+        height: 15
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_66
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 286
+        width: 450
+        height: 52
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_67
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 320
+        width: 22
+        height: 17
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_68
+      rect:
+        serializedVersion: 2
+        x: 614
+        y: 328
+        width: 17
+        height: 18
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_69
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 288
+        width: 9
+        height: 30
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_70
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 278
+        width: 14
+        height: 17
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_71
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 275
+        width: 16
+        height: 15
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_72
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 242
+        width: 252
+        height: 39
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_73
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 263
+        width: 9
+        height: 6
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_74
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 239
+        width: 47
+        height: 36
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_75
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 192
+        width: 212
+        height: 43
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_76
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 137
+        width: 186
+        height: 42
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_77
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 72
+        width: 192
+        height: 59
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_78
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 43
+        width: 94
+        height: 18
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_79
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 43
+        width: 89
+        height: 17
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_80
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 43
+        width: 99
+        height: 18
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: patapon_sprites_total_81
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 17
+        width: 201
+        height: 17
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
