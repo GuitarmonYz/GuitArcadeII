@@ -35,6 +35,12 @@ public class playerController : MonoBehaviour {
 	public void setMoveH(float moveH){
 		this.moveH = moveH;
 	}
+	public void prepare(){
+		animator.SetBool("prepare", true);
+	}
+	public void deprepare(){
+		animator.SetBool("prepare", false);
+	}
 	public void move(float moveH){
 		this.moveH = moveH;
 		animator.SetBool("move", true);
@@ -66,8 +72,6 @@ public class playerController : MonoBehaviour {
 	public void throw_spear(){
 		Vector2 curPos = this.transform.position;
 		Vector2 tarPos = new Vector2(curPos.x+0.1f, curPos.y);
-		// Quaternion tar_qua = Quaternion.identity;
-		// tar_qua.z = -55;
 		new_spear = Instantiate(spear, tarPos, Quaternion.identity);
 		new_spear.transform.parent = this.transform;
 	}

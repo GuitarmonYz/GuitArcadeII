@@ -1,58 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using MidiJack;
-public class manager : MonoBehaviour {
+public class Manager : MonoBehaviour {
 	Queue<char> key_input = new Queue<char>();
-	Queue<float[]> key_down = new Queue<float[]>();
-	Queue<float[]> key_up = new Queue<float[]>();
+	public Text text;
 	string move = "move";
 	string back = "back";
 	string dumb = "dumb";
 	string dshi = "dshi";
 	string spear = "spea";
 	float pre_position = 0;
-	int[] progress_map = {128,144,272,304};
+	int[] progress_map = new int[]{0,0,0,0};
+	string[] instruction_map = new string[]{"movef","moveb","attack","defence"};
+	int curInstruction = 0;
 	playerController player_controller;
 	bossController boss_controller;
+	mentorController mentor_controller;
 	public GameObject player;
 	public GameObject boss;
+	public GameObject mentor;
 	SpriteRenderer boss_renderer;
 	public MetronomePro metro;
 	AudioSource bt_source;
 	AudioSource solo_source;
-	bool input_lock = false;
-	int[] instruction_mask = new int[]{0,0,1};
 	float starting_time = 0;
 	AudioClip[] bt_clips;
-	AudioClip[] solo_clips;
-	HashSet<int> key_set = new HashSet<int>(){1,3,5,8,10};
+	AudioClip[] ins_clips;
+	private AudioSource metronomeAudioSource;
+	private AudioSource ins_source;
+	private MusicAnalysis musicAnalysis;
+	private Dictionary<string, int> instructionToIdx = new Dictionary<string, int>();
 	void Awake()
 	{
-		// Object[] bt_clips_raw = Resources.LoadAll("AudioFiles/backing_track", typeof(AudioClip));
-		// Object[] solo_clips_raw = Resources.LoadAll("AudioFiles/solo", typeof(AudioClip));
+		//Object[] bt_clips_raw = Resources.LoadAll("AudioFiles/backing_track", typeof(AudioClip));
+		Object[] ins_clips_raw = Resources.LoadAll("AudioFiles/instruction_rhythm", typeof(AudioClip));
 		// bt_clips = new AudioClip[bt_clips_raw.Length];
-		// solo_clips = new AudioClip[solo_clips_raw.Length];
+		ins_clips = new AudioClip[ins_clips_raw.Length];
 		// for (int i = 0; i<bt_clips_raw.Length;i++){
 		// 	bt_clips[i] = (AudioClip)bt_clips_raw[i];
 		// }
-		// for (int i = 0; i<solo_clips_raw.Length;i++){
-		// 	solo_clips[i] = (AudioClip)solo_clips_raw[i];
-		// }
+		for (int i = 0; i<ins_clips_raw.Length;i++){
+			ins_clips[i] = (AudioClip)ins_clips_raw[i];
+			instructionToIdx.Add(ins_clips[i].name, i);
+		}
 		AudioSource[] source_array = GetComponents<AudioSource>();
+		
 		bt_source = source_array[0];
-		// solo_source = source_array[1];
+		ins_source = source_array[1];
+		metronomeAudioSource = source_array[2];
+
 		// bt_source.clip = bt_clips[0];
-		// solo_source.clip = solo_clips[0];
+		ins_source.clip = ins_clips[instructionToIdx["movef"]];
 		boss_controller = boss.GetComponent<bossController>();
 		boss_renderer = boss.GetComponent<SpriteRenderer>();
+		mentor_controller = mentor.GetComponent<mentorController>();
+		player_controller = player.GetComponent<playerController>();
 		metro = GetComponent<MetronomePro>();
-
+		musicAnalysis = GetComponent<MusicAnalysis>();
 	}
 
 	// Use this for initialization
 	void Start () {
-		player_controller = player.GetComponent<playerController>();
+		text.text = "";
 		//boss_controller = boss.GetComponent<bossController>();
 		pre_position = player.transform.position.x;
 		// bt_source.Play();
@@ -66,11 +77,12 @@ public class manager : MonoBehaviour {
 		keyStore();
 		if (player.transform.position.x > pre_position + 1.92f){
 			player_controller.stop();
-			boss_controller.stop();
+			//boss_controller.stop();
+			mentor_controller.stop();
 		}
 		if (player.transform.position.x < pre_position - 1.92f){
 			player_controller.stop();
-			boss_controller.stop();
+			mentor_controller.stop();
 		}
 		if (Input.GetKey("f")){
 			Debug.Log("fire");
@@ -83,87 +95,68 @@ public class manager : MonoBehaviour {
 			bt_source.Play();
 			metro.Play();
 		}
-		
-		react_music();
 	}
-	// public void OnTick(int tick_times){
-	// 	Debug.Log("ontick");
-	// 	int progress = checkProgress(progress_map, tick_times);
-	// 	switch (progress){
-	// 		case 0:
-	// 			if ((tick_times+1)%32 == 0){
-	// 				int random = Random.Range(0,13);
-	// 				solo_source.clip = solo_clips[random];
-	// 				solo_source.Play();
-	// 				StartCoroutine(music_analysis(key_down,key_up));
-	// 			}
-	// 			break;
-	// 		case 1:
-	// 			if (tick_times == progress_map[progress]+1){
-	// 				bt_source.clip = bt_clips[1];
-	// 				bt_source.Play();
-	// 			}
-	// 			break;
-	// 		case 2:
-	// 			if (tick_times == progress_map[progress]+1){
-	// 				bt_source.clip = bt_clips[2];
-	// 				bt_source.Play();
-	// 			}
-	// 			if ((tick_times+1)%32 == 0){
-	// 				int random = Random.Range(14,22);
-	// 				solo_source.clip = solo_clips[random];
-	// 				solo_source.Play();
-	// 			}
-	// 			break;
-	// 		case 3:
-	// 			if (tick_times == progress_map[progress]+1){
-	// 				bt_source.clip = bt_clips[3];
-	// 				bt_source.Play();
-	// 			}
-	// 			break;
-	// 		default:
-	// 			bt_source.Stop();
-	// 			break;
-	// 	}
-	// }
 
-	IEnumerator music_analysis(Queue<float[]> key_down, Queue<float[]> key_up){
-		input_lock = true;
-		float duration = 60/162;
-		float beat_off = 0;
-		//onset
-		//note analysis
-		instruction_mask[1] = 1;
-		float num_right_note = 0;
-		foreach (float[] note_val in key_down){
-			if(key_set.Contains((int)(note_val[0]%12))) num_right_note+=note_val[0];
-			float tmp = (note_val[2]-starting_time)/(duration/4);
-			beat_off += Mathf.Abs(Mathf.Round(tmp)-tmp);
+	public string checkProgress(){
+		//Debug.Log(instruction_map[curInstruction]);
+		return instruction_map[curInstruction];
+	}
+
+	public void incrementProgress(bool succeed){
+		if (succeed) {
+			progress_map[curInstruction]++;
+			if (progress_map[curInstruction]>=4) curInstruction++;
 		}
-		beat_off /= key_up.Count;
-		Debug.Log(beat_off);
-		float ratio = num_right_note/key_up.Count;
-		if (ratio>0.85f){
-			player_controller.throw_spear();
+	}
+
+	public playerController GetPlayerController(){
+		return this.player_controller;
+	}
+
+	public IEnumerator OnTick (int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength) {
+		metronomeAudioSource.Play ();
+		// Debug.Log("tick");
+		if (CurrentTick >= barOffset * Step){
+			if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+				//Debug.Log(CurrentTick);
+				if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgress()]];
+				ins_source.Play();
+				player_controller.deprepare();
+				text.text = "move forward";
+				if (CurrentTick != barOffset * Step + 1) {
+					//string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+					string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+					switch (instruction){
+						case "movef":
+							player_controller.move(2);
+							mentor_controller.move(2);
+							pre_position = player.transform.position.x;
+							break;
+						case "moveb":
+							text.text = "move backward";
+							player_controller.move(-2);
+							mentor_controller.move(-2);
+							pre_position = player.transform.position.x;
+							break;
+					    case "attack":
+							text.text = "attack";
+							player_controller.throw_spear();
+							break;
+						case "defence":
+							text.text = "defence";
+							player_controller.use_shield();
+							break;
+						case "failed":
+							text.text = "failed";
+							Debug.Log("failed");
+							break;
+					}
+				}
+			}
 		}
-		key_down.Clear();
-		key_up.Clear();
-		input_lock = false;
-		Debug.Log("Analysis finished");
+
+		//Debug.Log ("Current Step: " + CurrentStep + "/" + Step);
 		yield return null;
-	}
-
-	int checkProgress(int[] progress_map, int tick_times){
-		for (int i = 0; i < progress_map.Length; i++) 
-			if (tick_times/4 < progress_map[i]) return i;
-		return -1;
-	}
-
-	void react_music(){
-		if (instruction_mask[1] == 1){
-			Debug.Log("mask works");
-			instruction_mask[1] = 0;
-		}
 	}
 
 	private void keyStore(){

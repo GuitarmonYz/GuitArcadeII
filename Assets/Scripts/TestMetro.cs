@@ -15,7 +15,7 @@ public class TestMetro : MonoBehaviour
     private int accent;
     private bool running = false;
 	private int tick_times = 0;
-	private manager manager;
+	private Manager manager;
     void Start()
     {
         accent = signatureHi;
@@ -24,7 +24,7 @@ public class TestMetro : MonoBehaviour
         sampleRate = AudioSettings.outputSampleRate;
         nextTick = startTick * sampleRate;
         running = true;
-		manager = GetComponent<manager>();
+		manager = GetComponent<Manager>();
     }
 
     void OnAudioFilterRead(float[] data, int channels)

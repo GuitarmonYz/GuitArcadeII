@@ -24,6 +24,7 @@ public class MetronomePro : MonoBehaviour {
 
 	public double Bpm = 140.0f;
 	public double OffsetMS = 0;
+	
 
 	public int Step = 4;
 	public int Base = 4;
@@ -31,19 +32,22 @@ public class MetronomePro : MonoBehaviour {
 	public int CurrentMeasure = 0;
 	public int CurrentStep = 0;
 	public int CurrentTick;
-
+	public int barOffset = 0;
+	public int roundLength = 2;
 	public List<Double> songTickTimes;
 
 	double interval;
 
 	public bool neverPlayed = true;
 	private MusicAnalysis musicAnalysis;
+	private Manager manager;
 	void Awake()
 	{
 		AudioSource[] source_array = GetComponents<AudioSource>();
 		songAudioSource = source_array[0];
-		metronomeAudioSource = source_array[1];
+		metronomeAudioSource = source_array[2];
 		musicAnalysis = GetComponent<MusicAnalysis>();
+		manager = GetComponent<Manager>();
 	}
 
 	public void GetSongData (double _bpm, double _offsetMS, int _base, int _step) {
@@ -201,39 +205,38 @@ public class MetronomePro : MonoBehaviour {
 			}
 
 			// Call OnTick functions
-			StartCoroutine (OnTick ());
+			StartCoroutine (manager.OnTick(CurrentTick, songTickTimes, barOffset, Step, roundLength));
 		}
 
 		yield return null;
 	}
 
 	// Tick Time (execute here all what you want)
-	IEnumerator OnTick () {
-
-		// Play Audio Tick
-		metronomeAudioSource.Play ();
+	// IEnumerator OnTick () {
+	// 	// Play Audio Tick
+	// 	metronomeAudioSource.Play ();
+	// 	// YOUR FUNCTIONS HERE
 		
-		// YOUR FUNCTIONS HERE
-		if ((CurrentTick-8+1)%32 == 0){
-			//Debug.Log(CurrentTick);
-			if (CurrentTick == 7){
-				musicAnalysis.input_lock = false;
-			}else{
-				musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
-			}
+	// 	if (CurrentTick >= barOffset * Step){
+	// 		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+	// 			if (CurrentTick != barOffset * Step + 1) musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+				
+	// 		}
+	// 	}
+
+	// 	if ((CurrentTick-5)%8 == 0){
+	// 		//Debug.Log(CurrentTick);
+	// 		if (CurrentTick == 5){
+	// 			Debug.Log("input start");
+	// 			musicAnalysis.input_lock = false;
+	// 		}else{
+	// 			Debug.Log("analysis start");
+	// 			musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+	// 		}
 			
-		}
-		// Example 1
-		/*
-		if (CurrentTick == 100) {
-			Debug.Log ("OMG! IS THE TICK NUMBER 100!");
-		}
-		*/
+	// 	}
 
-		// Example 2
-		// FindObjectOfType<MyAwesomeScript> ().MyFunction ();
-
-		//Debug.Log ("Current Step: " + CurrentStep + "/" + Step);
-		yield return null;
-	}
+	// 	//Debug.Log ("Current Step: " + CurrentStep + "/" + Step);
+	// 	yield return null;
+	// }
 }
