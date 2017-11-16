@@ -19,7 +19,7 @@ public class MusicAnalysis : MonoBehaviour {
 		instructionMap.Add("movef", new double[]{4,2,2,2,2,4});
 		instructionMap.Add("moveb", new double[]{4,2,4,2,3,1});
 		instructionMap.Add("attack", new double[]{3,1,4,2,3,2,1});
-		instructionMap.Add("defense", new double[]{2,1,1,1,1,2,2,3,2,1});
+		instructionMap.Add("defence", new double[]{2,1,1,1,1,2,2,3,2,1});
 		manager = GetComponent<Manager>();
 	}
 	
@@ -87,6 +87,7 @@ public class MusicAnalysis : MonoBehaviour {
 	}
 
 	public double rhythmDetection(int currentTick, List<double> songTickTimes, double[] rhythmTemplate, int searchMethod){
+		if (key_down.Count == 0) return 0;
 		double interval = (songTickTimes[1] - songTickTimes[0])/4;
 		double[] prev_onset = key_down.Dequeue();
 		double[][] key_down_copy = key_down.ToArray();

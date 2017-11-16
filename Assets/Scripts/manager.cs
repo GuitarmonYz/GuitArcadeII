@@ -14,6 +14,7 @@ public class Manager : MonoBehaviour {
 	float pre_position = 0;
 	int[] progress_map = new int[]{0,0,0,0};
 	string[] instruction_map = new string[]{"movef","moveb","attack","defence"};
+	string[] notice_map = new string[]{"move forward", "move backward", "attack", "defence"};
 	int curInstruction = 0;
 	playerController player_controller;
 	bossController boss_controller;
@@ -119,31 +120,34 @@ public class Manager : MonoBehaviour {
 		if (CurrentTick >= barOffset * Step){
 			if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
 				//Debug.Log(CurrentTick);
-				if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgress()]];
-				ins_source.Play();
-				player_controller.deprepare();
-				text.text = "move forward";
-				if (CurrentTick != barOffset * Step + 1) {
-					//string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+				
+				if (CurrentTick == barOffset * Step + 1){
+					ins_source.Play();
+					text.text = "move forward";
+				} else {
 					string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+					if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgress()]];
+					ins_source.Play();
+					text.text = notice_map[curInstruction];
 					switch (instruction){
 						case "movef":
+							//text.text = "move forward";
 							player_controller.move(2);
 							mentor_controller.move(2);
 							pre_position = player.transform.position.x;
 							break;
 						case "moveb":
-							text.text = "move backward";
+							//text.text = "move backward";
 							player_controller.move(-2);
 							mentor_controller.move(-2);
 							pre_position = player.transform.position.x;
 							break;
 					    case "attack":
-							text.text = "attack";
+							//text.text = "attack";
 							player_controller.throw_spear();
 							break;
 						case "defence":
-							text.text = "defence";
+							//text.text = "defence";
 							player_controller.use_shield();
 							break;
 						case "failed":
