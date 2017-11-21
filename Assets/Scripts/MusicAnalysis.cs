@@ -42,7 +42,6 @@ public class MusicAnalysis : MonoBehaviour {
 		input_lock = true;
 		string instruction = manager.checkProgress();
 		double[] rhythmTemplate = instructionMap[instruction];
-		//Debug.Log(offBeatDetection(currentTick, songTickTimes, 2));
 		double accuracy = rhythmDetection(currentTick, songTickTimes, rhythmTemplate, 1);
 		Debug.Log("rhythm accuracy: " + accuracy);
 		manager.incrementProgress(accuracy >= 0.8);
@@ -57,31 +56,11 @@ public class MusicAnalysis : MonoBehaviour {
 		input_lock = false;
 		return res;
 	}
-
-	// public double onBeatDetection(int currentTick, List<double> songTickTimes){
-	// 	double offBeat = 0;
-	// 	double numBeat = key_down.Count;
-	// 	double interval = (songTickTimes[1] - songTickTimes[0]);
-	// 	double bar_length = songTickTimes[songTickTimes.Count-1] - songTickTimes[0];
-	// 	for (int i = currentTick - 31; i <= currentTick; i++){
-	// 		if (key_down.Count == 0) break;
-	// 		while (key_down.Peek()[2] < songTickTimes[i+1]){
-	// 			offBeat += System.Math.Abs(interval/2 - System.Math.Abs(songTickTimes[i] + interval/2 - key_down.Peek()[2]))/(interval/2);
-	// 			key_down.Dequeue();
-	// 			if (key_down.Count == 0) break;
-	// 		}
-	// 	}
-	// 	return (offBeat/numBeat)*1000;
-	// }
 	public string matchInstruction(int currentTick, List<double> songTickTimes){
 		string res = "";
-		double max_accracy = 0;
 		foreach (KeyValuePair<string, double[]> entry in instructionMap){
 			double accuracy = rhythmDetection(currentTick, songTickTimes, entry.Value, 1);
-			if (accuracy>max_accracy){
-				max_accracy = accuracy;
-				res = entry.Key;
-			} 
+			if (accuracy == 1) res = entry.Key;
 		}
 		return res;
 	}
@@ -160,8 +139,6 @@ public class MusicAnalysis : MonoBehaviour {
 		double tri_interval = (songTickTimes[1]-songTickTimes[0])/3;
 		double bar_length = songTickTimes[songTickTimes.Count-1] - songTickTimes[0] + interval;
 		double markIdx = songTickTimes[currentTick-(numBar*4-1)];
-		Debug.Log(markIdx);
-		Debug.Log(interval);
 		double tri_markIdx = songTickTimes[currentTick-(numBar*4-1)];
 		foreach (double[] onset in key_down){
 			if (onset[2] > markIdx){
@@ -176,12 +153,8 @@ public class MusicAnalysis : MonoBehaviour {
 			
 			double tmp_offBeat = System.Math.Abs(interval/2 - System.Math.Abs(markIdx - interval/2 - onset[2]))/(interval/2);
 			double tri_tmp_offBeat = System.Math.Abs(tri_interval/2 - System.Math.Abs(tri_markIdx - tri_interval/2 - onset[2]))/(tri_interval/2);
-			//Debug.Log("off"+tmp_offBeat);
-			//Debug.Log("tri_off"+tri_tmp_offBeat);
-			//offBeat += System.Math.Min(tmp_offBeat, tri_tmp_offBeat);
 			offBeat += (tmp_offBeat * 1 + tri_tmp_offBeat * 0);
 		}
-		
 		return (offBeat/numOnset)*1000;
 	}
 }
