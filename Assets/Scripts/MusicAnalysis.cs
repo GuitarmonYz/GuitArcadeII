@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using MidiJack;
 public class MusicAnalysis : MonoBehaviour {
@@ -42,7 +43,7 @@ public class MusicAnalysis : MonoBehaviour {
 		input_lock = true;
 		string instruction = manager.checkProgress();
 		double[] rhythmTemplate = instructionMap[instruction];
-		double accuracy = rhythmDetection(currentTick, songTickTimes, rhythmTemplate, 1);
+		double accuracy = rhythmDetection(currentTick, songTickTimes, rhythmTemplate, 0);
 		Debug.Log("rhythm accuracy: " + accuracy);
 		manager.incrementProgress(accuracy >= 0.8);
 		if (accuracy >= 0.8){
@@ -50,17 +51,59 @@ public class MusicAnalysis : MonoBehaviour {
 		}else{
 			res = "failed";
 		}
-		//res = matchInstruction(currentTick, songTickTimes);
+		// res = rhythmDetection(currentTick, songTickTimes, instructionMap);
 		key_down.Clear();
 		key_up.Clear();
 		input_lock = false;
 		return res;
 	}
-	public string matchInstruction(int currentTick, List<double> songTickTimes){
+	// public string matchInstruction(int currentTick, List<double> songTickTimes){
+	// 	string res = "";
+	// 	foreach (KeyValuePair<string, double[]> entry in instructionMap){
+	// 		if (rhythmDetection(currentTick, songTickTimes, entry.Value, 2) == 1){
+	// 			res = entry.Key;
+	// 			break;
+	// 		} 
+	// 	}
+	// 	return res = (res != "") ? res : "failed";
+	// }
+
+	public string rhythmDetection(int currentTick, List<double> songTickTimes, Dictionary<string, double[]> rhythmTemplates){
+		if (key_down.Count == 0) return "failed";
+		double interval = (songTickTimes[1] - songTickTimes[0])/4;
+		double[][] key_down_copy = key_down.ToArray();
+		double[] prev_onset = key_down_copy[0];
+		List<double> diff_onset = new List<double>();
+		for (int k = 1; k < key_down_copy.Length; k++){
+			diff_onset.Add(System.Math.Round((key_down_copy[k][2]-prev_onset[2])/interval));
+			prev_onset = key_down_copy[k];
+		}
+		diff_onset.Add(System.Math.Round((songTickTimes[currentTick-1]-key_down_copy[key_down.Count-1][2])/interval));
+		
+		string interonsite_str = "";
+		foreach(double interonsite in diff_onset){
+			interonsite_str += (" "+interonsite);
+		}
+		Debug.Log(interonsite_str);
 		string res = "";
-		foreach (KeyValuePair<string, double[]> entry in instructionMap){
-			double accuracy = rhythmDetection(currentTick, songTickTimes, entry.Value, 1);
-			if (accuracy == 1) res = entry.Key;
+		foreach (KeyValuePair<string, double[]> entry in instructionMap) {
+			double[] rhythmTemplate = entry.Value;
+			if (diff_onset.Count != rhythmTemplate.Length) {
+				res = "failed";
+				break;
+			}
+			int miss = 0;
+			for(int i = 0; i < diff_onset.Count; i++){
+				if (diff_onset[i] != rhythmTemplate[i]){
+					miss++;
+				}
+			}
+			if (miss == 0) {
+				res = entry.Key;
+				break;
+			} else {
+				res = "failed";
+			}
 		}
 		return res;
 	}
@@ -68,22 +111,25 @@ public class MusicAnalysis : MonoBehaviour {
 	public double rhythmDetection(int currentTick, List<double> songTickTimes, double[] rhythmTemplate, int searchMethod){
 		if (key_down.Count == 0) return 0;
 		double interval = (songTickTimes[1] - songTickTimes[0])/4;
-		double[] prev_onset = key_down.Dequeue();
-		double[][] key_down_copy = key_down.ToArray();
-		int miss, i=0 ,j = 0;
 		
+		double[][] key_down_copy = key_down.ToArray();
+		double[] prev_onset = key_down_copy[0];
+		int miss, i=0 ,j = 0;
 		List<double> diff_onset = new List<double>();
-		foreach (double[] onset in key_down){
-			//Debug.Log(onset[2]);
-			diff_onset.Add(System.Math.Round((onset[2]-prev_onset[2])/interval));
-			prev_onset = onset;
+
+		for (int k = 1; k < key_down_copy.Length; k++){
+			diff_onset.Add(System.Math.Round((key_down_copy[k][2]-prev_onset[2])/interval));
+			prev_onset = key_down_copy[k];
 		}
+
 		diff_onset.Add(System.Math.Round((songTickTimes[currentTick-1]-key_down_copy[key_down.Count-1][2])/interval));
+		
 		string interonsite_str = "";
 		foreach(double interonsite in diff_onset){
 			interonsite_str += (" "+interonsite);
 		}
 		Debug.Log(interonsite_str);
+
 		if (searchMethod == 0){
 			if (rhythmTemplate.Length < diff_onset.Count){
 				miss = rhythmTemplate.Length;
@@ -104,7 +150,8 @@ public class MusicAnalysis : MonoBehaviour {
 					if (miss > numMiss) miss = numMiss;
 				} 
 			}
-		}else{
+			Debug.Log(miss);
+		}else if (searchMethod == 1){
 			miss = 0;
 			while (i < rhythmTemplate.Length && j < diff_onset.Count){
 				if (rhythmTemplate[i] == diff_onset[j]){
@@ -128,6 +175,22 @@ public class MusicAnalysis : MonoBehaviour {
 					miss++;
 				}
 			}
+		} else if (searchMethod == 2) {
+			miss = 0;
+			if (rhythmTemplate.Length == diff_onset.Count){
+				for (int k = 0; k < diff_onset.Count; k++){
+					if (rhythmTemplate[k] != diff_onset[k]){
+						miss = rhythmTemplate.Length;
+						break;
+					}else{
+						miss++;
+					}
+				}
+			} else {
+				miss = rhythmTemplate.Length;
+			}
+		} else {
+			miss = rhythmTemplate.Length;
 		}
 		return 1 - miss/(float)rhythmTemplate.Length;
 	}

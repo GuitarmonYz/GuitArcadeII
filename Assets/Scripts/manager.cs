@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using MidiJack;
@@ -23,7 +24,7 @@ public class Manager : MonoBehaviour {
 	public GameObject boss;
 	public GameObject mentor;
 	SpriteRenderer boss_renderer;
-	public MetronomePro metro;
+	private MetronomePro metro;
 	AudioSource bt_source;
 	AudioSource solo_source;
 	float starting_time = 0;
@@ -114,52 +115,88 @@ public class Manager : MonoBehaviour {
 		return this.player_controller;
 	}
 
-	public IEnumerator OnTick (int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength) {
+	public IEnumerator OnTick (int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength, int Mode) {
 		metronomeAudioSource.Play ();
-		// Debug.Log("tick");
 		if (CurrentTick >= barOffset * Step){
-			if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
-				//Debug.Log(CurrentTick);
-				
-				if (CurrentTick == barOffset * Step + 1){
-					ins_source.Play();
-					text.text = "move forward";
-				} else {
-					string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
-					if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgress()]];
-					ins_source.Play();
-					text.text = notice_map[curInstruction];
-					switch (instruction){
-						case "movef":
-							//text.text = "move forward";
-							player_controller.move(2);
-							mentor_controller.move(2);
-							pre_position = player.transform.position.x;
-							break;
-						case "moveb":
-							//text.text = "move backward";
-							player_controller.move(-2);
-							mentor_controller.move(-2);
-							pre_position = player.transform.position.x;
-							break;
-					    case "attack":
-							//text.text = "attack";
-							player_controller.throw_spear();
-							break;
-						case "defence":
-							//text.text = "defence";
-							player_controller.use_shield();
-							break;
-						case "failed":
-							text.text = "failed";
-							Debug.Log("failed");
-							break;
-					}
+			StartCoroutine(mentorMode(CurrentTick, songTickTimes, barOffset, Step, roundLength));
+		}
+		yield return null;
+	}
+
+	private IEnumerator mentorMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
+		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+			if (CurrentTick == barOffset * Step + 1){
+				ins_source.Play();
+				text.text = "move forward";
+			} else {
+				string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+				if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgress()]];
+				yield return null;
+				ins_source.Play();
+				text.text = notice_map[curInstruction];
+				switch (instruction){
+					case "movef":
+						//text.text = "move forward";
+						player_controller.move(2);
+						mentor_controller.move(2);
+						pre_position = player.transform.position.x;
+						break;
+					case "moveb":
+						//text.text = "move backward";
+						player_controller.move(-2);
+						mentor_controller.move(-2);
+						pre_position = player.transform.position.x;
+						break;
+					case "attack":
+						//text.text = "attack";
+						player_controller.throw_spear();
+						break;
+					case "defence":
+						//text.text = "defence";
+						player_controller.use_shield();
+						break;
+					case "failed":
+						text.text = "failed";
+						Debug.Log("failed");
+						break;
 				}
 			}
 		}
+	}
 
-		//Debug.Log ("Current Step: " + CurrentStep + "/" + Step);
+	private IEnumerator monsterMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
+		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+			
+		} else if ((CurrentTick - barOffset * Step - 1 - roundLength * Step) % (roundLength * Step * 2) == 0) {
+			string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+			if(!ins_source.isPlaying && instruction!="failed") ins_source.clip = ins_clips[instructionToIdx[instruction]];
+			yield return null;
+			ins_source.Play();
+			
+			switch (instruction){
+				case "movef":
+					//text.text = "move forward";
+					player_controller.move(2);
+					pre_position = player.transform.position.x;
+					break;
+				case "moveb":
+					//text.text = "move backward";
+					player_controller.move(-2);
+					pre_position = player.transform.position.x;
+					break;
+				case "attack":
+					//text.text = "attack";
+					player_controller.throw_spear();
+					break;
+				case "defence":
+					//text.text = "defence";
+					player_controller.use_shield();
+					break;
+				case "failed":
+					Debug.Log("failed");
+					break;
+			}
+		}
 		yield return null;
 	}
 

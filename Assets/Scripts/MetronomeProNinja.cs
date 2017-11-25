@@ -205,7 +205,7 @@ public class MetronomeProNinja : MonoBehaviour {
 			}
 
 			// Call OnTick functions
-			StartCoroutine (manager.OnTick(CurrentTick, songTickTimes, barOffset, Step, roundLength));
+			StartCoroutine (manager.OnTick(CurrentTick, songTickTimes, barOffset, Step, roundLength, 0));
 		}
 
 		yield return null;
