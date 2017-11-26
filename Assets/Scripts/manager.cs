@@ -11,7 +11,7 @@ public class Manager : MonoBehaviour {
 	string back = "back";
 	string dumb = "dumb";
 	string dshi = "dshi";
-	string spear = "spea";
+	string spear = "attack";
 	float pre_position = 0;
 	int[] progress_map = new int[]{0,0,0,0};
 	string[] instruction_map = new string[]{"movef","moveb","attack","defence"};
@@ -19,20 +19,24 @@ public class Manager : MonoBehaviour {
 	int curInstruction = 0;
 	playerController player_controller;
 	bossController boss_controller;
+	MonsterController monster_controller;
 	mentorController mentor_controller;
 	public GameObject player;
 	public GameObject boss;
 	public GameObject mentor;
+	public GameObject monster;
 	SpriteRenderer boss_renderer;
 	private MetronomePro metro;
 	AudioSource bt_source;
-	AudioSource solo_source;
+	// AudioSource solo_source;
 	float starting_time = 0;
-	AudioClip[] bt_clips;
+	// AudioClip[] bt_clips;
 	AudioClip[] ins_clips;
 	private AudioSource metronomeAudioSource;
 	private AudioSource ins_source;
 	private MusicAnalysis musicAnalysis;
+	private bool firePrepare;
+	private int fireTickCounter;
 	private Dictionary<string, int> instructionToIdx = new Dictionary<string, int>();
 	void Awake()
 	{
@@ -59,6 +63,7 @@ public class Manager : MonoBehaviour {
 		boss_renderer = boss.GetComponent<SpriteRenderer>();
 		mentor_controller = mentor.GetComponent<mentorController>();
 		player_controller = player.GetComponent<playerController>();
+		monster_controller = monster.GetComponent<MonsterController>();
 		metro = GetComponent<MetronomePro>();
 		musicAnalysis = GetComponent<MusicAnalysis>();
 	}
@@ -66,6 +71,7 @@ public class Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		text.text = "";
+		firePrepare = false;
 		//boss_controller = boss.GetComponent<bossController>();
 		pre_position = player.transform.position.x;
 		// bt_source.Play();
@@ -80,11 +86,12 @@ public class Manager : MonoBehaviour {
 		if (player.transform.position.x > pre_position + 1.92f){
 			player_controller.stop();
 			//boss_controller.stop();
-			mentor_controller.stop();
+			if (mentor_controller != null) mentor_controller.stop();
+			
 		}
 		if (player.transform.position.x < pre_position - 1.92f){
 			player_controller.stop();
-			mentor_controller.stop();
+			if (mentor_controller != null) mentor_controller.stop();
 		}
 		if (Input.GetKey("f")){
 			Debug.Log("fire");
@@ -118,7 +125,7 @@ public class Manager : MonoBehaviour {
 	public IEnumerator OnTick (int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength, int Mode) {
 		metronomeAudioSource.Play ();
 		if (CurrentTick >= barOffset * Step){
-			StartCoroutine(mentorMode(CurrentTick, songTickTimes, barOffset, Step, roundLength));
+			StartCoroutine(monsterMode(CurrentTick, songTickTimes, barOffset, Step, roundLength));
 		}
 		yield return null;
 	}
@@ -169,12 +176,26 @@ public class Manager : MonoBehaviour {
 
 	private IEnumerator monsterMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
 		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
-			
+			player_controller.deprepare();
+			if (!firePrepare){
+				int random = Random.Range(1,11);
+				if (random <= 9) {
+					monster_controller.prepareFire();
+					firePrepare = true;
+					fireTickCounter = 0;
+				}
+			} else {
+				fireTickCounter++;
+				if (fireTickCounter >= 2){
+					firePrepare = false;
+					monster_controller.shootFire();
+				}
+			}	
 		} else if ((CurrentTick - barOffset * Step - 1 - roundLength * Step) % (roundLength * Step * 2) == 0) {
 			string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
 			if(!ins_source.isPlaying && instruction!="failed") ins_source.clip = ins_clips[instructionToIdx[instruction]];
 			yield return null;
-			ins_source.Play();
+			if (instruction != "failed") ins_source.Play();
 			
 			switch (instruction){
 				case "movef":

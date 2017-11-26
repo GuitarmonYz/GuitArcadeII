@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class playerController : MonoBehaviour {
 	public GameObject umbrella;
 	private GameObject new_umb;
@@ -10,22 +10,17 @@ public class playerController : MonoBehaviour {
 	private GameObject new_shi;
 	public GameObject spear;
 	private GameObject new_spear;
+	public Image content;
 	Rigidbody2D rb2d;
 	Animator animator;
 	SpriteRenderer spriteRenderer;
 	float moveH = 0;
-	// Use this for initialization
-	/// <summary>
-	/// Awake is called when the script instance is being loaded.
-	/// </summary>
+	float health = 100;
 	void Awake()
 	{
 		rb2d = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
-		
-	}
-	void Start () {
-		
+		content.fillAmount = health/100.0f;
 	}
 	
 	// Update is called once per frame
@@ -41,12 +36,17 @@ public class playerController : MonoBehaviour {
 	public void deprepare(){
 		animator.SetBool("prepare", false);
 	}
+	public void removeShield(){
+		if (new_shi != null) Destroy(new_shi.gameObject);
+	}
 	public void move(float moveH){
 		this.moveH = moveH;
+		deprepare();
 		animator.SetBool("move", true);
 	}
 	public void back(float moveH){
 		this.moveH = moveH;
+		deprepare();
 		animator.SetBool("move",true);
 	}
 	public void stop(){
@@ -71,9 +71,28 @@ public class playerController : MonoBehaviour {
 	}
 	public void throw_spear(){
 		Vector2 curPos = this.transform.position;
-		Vector2 tarPos = new Vector2(curPos.x+0.1f, curPos.y);
-		new_spear = Instantiate(spear, tarPos, Quaternion.identity);
-		new_spear.transform.parent = this.transform;
+		
+		for(int i = 0; i < 3; i++){
+			float offset = UnityEngine.Random.Range(0.1f,2f);
+			Vector2 tarPos = new Vector2(curPos.x+offset, curPos.y);
+			new_spear = Instantiate(spear, tarPos, Quaternion.identity);
+			new_spear.transform.parent = this.transform;
+		}
+		
+	}
+
+	/// <summary>
+	/// Sent when another object enters a trigger collider attached to this
+	/// object (2D physics only).
+	/// </summary>
+	/// <param name="other">The other Collider2D involved in this collision.</param>
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		Debug.Log("trigger");
+		if (other.gameObject.CompareTag("fireball")){
+			this.health -= 10;
+			content.fillAmount = health/100.0f;
+		}
 	}
 
 }

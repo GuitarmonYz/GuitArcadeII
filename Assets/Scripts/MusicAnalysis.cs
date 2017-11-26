@@ -20,7 +20,7 @@ public class MusicAnalysis : MonoBehaviour {
 		instructionMap.Add("movef", new double[]{4,2,2,2,2,4});
 		instructionMap.Add("moveb", new double[]{4,2,4,2,3,1});
 		instructionMap.Add("attack", new double[]{3,1,4,2,3,2,1});
-		instructionMap.Add("defence", new double[]{2,1,1,1,1,2,2,3,2,1});
+		instructionMap.Add("defence", new double[]{2,1,1,1,2,1,2,3,2,1});
 		manager = GetComponent<Manager>();
 	}
 	
@@ -41,17 +41,17 @@ public class MusicAnalysis : MonoBehaviour {
 	public string analysisMusic(int currentTick, List<double> songTickTimes){
 		string res ="";
 		input_lock = true;
-		string instruction = manager.checkProgress();
-		double[] rhythmTemplate = instructionMap[instruction];
-		double accuracy = rhythmDetection(currentTick, songTickTimes, rhythmTemplate, 0);
-		Debug.Log("rhythm accuracy: " + accuracy);
-		manager.incrementProgress(accuracy >= 0.8);
-		if (accuracy >= 0.8){
-			res = instruction;
-		}else{
-			res = "failed";
-		}
-		// res = rhythmDetection(currentTick, songTickTimes, instructionMap);
+		// string instruction = manager.checkProgress();
+		// double[] rhythmTemplate = instructionMap[instruction];
+		// double accuracy = rhythmDetection(currentTick, songTickTimes, rhythmTemplate, 0);
+		// Debug.Log("rhythm accuracy: " + accuracy);
+		// manager.incrementProgress(accuracy >= 0.8);
+		// if (accuracy >= 0.8){
+		// 	res = instruction;
+		// }else{
+		// 	res = "failed";
+		// }
+		res = rhythmDetection(currentTick, songTickTimes, instructionMap);
 		key_down.Clear();
 		key_up.Clear();
 		input_lock = false;
@@ -88,22 +88,24 @@ public class MusicAnalysis : MonoBehaviour {
 		string res = "";
 		foreach (KeyValuePair<string, double[]> entry in instructionMap) {
 			double[] rhythmTemplate = entry.Value;
-			if (diff_onset.Count != rhythmTemplate.Length) {
-				res = "failed";
-				break;
-			}
 			int miss = 0;
-			for(int i = 0; i < diff_onset.Count; i++){
-				if (diff_onset[i] != rhythmTemplate[i]){
-					miss++;
+			if (diff_onset.Count == rhythmTemplate.Length) {
+				for(int i = 0; i < diff_onset.Count; i++){
+					if (diff_onset[i] != rhythmTemplate[i]){
+						miss++;
+					}
 				}
+			} else {
+				miss = rhythmTemplate.Length;
 			}
+			
 			if (miss == 0) {
 				res = entry.Key;
 				break;
 			} else {
 				res = "failed";
 			}
+			Debug.Log(miss);
 		}
 		return res;
 	}

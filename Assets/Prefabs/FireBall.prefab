@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 212454442847091500}
   - component: {fileID: 95371682864705516}
   - component: {fileID: 114061687924897918}
+  - component: {fileID: 58512921055414474}
   m_Layer: 0
   m_Name: FireBall
-  m_TagString: Untagged
+  m_TagString: fireball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,12 +37,27 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1524140476295924}
   m_LocalRotation: {x: -0, y: -0, z: 0.15578292, w: 0.98779136}
-  m_LocalPosition: {x: 1.36, y: -1.18, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 17.924002}
+--- !u!58 &58512921055414474
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1524140476295924}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.42
 --- !u!95 &95371682864705516
 Animator:
   serializedVersion: 3

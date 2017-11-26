@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class fireballController : MonoBehaviour {
-	
-
 	public float speed = 1f;
 	Vector2 startPos;
 	Vector2 endPos;
@@ -15,8 +13,7 @@ public class fireballController : MonoBehaviour {
 	void Start () {
 		startTime = Time.time;
 		startPos = transform.position;
-		endPos = new Vector2(startPos.x - 4.12f, startPos.y -1.78f);
-		length = Vector2.Distance(startPos,endPos);
+		
 		animator=GetComponent<Animator>();
 	}
 	
@@ -24,13 +21,28 @@ public class fireballController : MonoBehaviour {
 	void Update () {
 		float disCover = (Time.time - startTime)*speed;
 		float fracTime = disCover / length;
-		transform.position = Vector2.Lerp(startPos,endPos,fracTime);
-		//Debug.Log(transform.position.x);
-		if (transform.position.x == endPos.x){
-			animator.SetTrigger("explotion");
-			//Debug.Log("trigger");
+		if (endPos != null){
+			transform.position = Vector2.Lerp(startPos,endPos,fracTime);
+			//Debug.Log(transform.position.x);
+			// if (transform.position.x == endPos.x){
+			// 	animator.SetTrigger("explotion");
+			// }
 		}
 		
+	}
+
+	public void setPlayerLocation(Vector2 location){
+		endPos = location;
+		length = Vector2.Distance(startPos,endPos);
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		animator.SetTrigger("explotion");
+		if (other.gameObject.CompareTag("shield")){
+			
+			Destroy(other.gameObject);
+		}
 	}
 	void destroySelf(){
 		Destroy(this.gameObject);
