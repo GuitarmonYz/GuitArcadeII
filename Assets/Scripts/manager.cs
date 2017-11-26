@@ -15,7 +15,7 @@ public class Manager : MonoBehaviour {
 	float pre_position = 0;
 	int[] progress_map = new int[]{0,0,0,0};
 	string[] instruction_map = new string[]{"movef","moveb","attack","defence"};
-	string[] notice_map = new string[]{"move forward", "move backward", "attack", "defence"};
+	string[] notice_map = new string[]{"Move forward!", "Move backward!", "Attack!!!", "Defence!!"};
 	int curInstruction = 0;
 	playerController player_controller;
 	bossController boss_controller;
@@ -125,6 +125,7 @@ public class Manager : MonoBehaviour {
 
 	private IEnumerator mentorMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
 		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+			mentor_controller.teach();
 			if (CurrentTick == barOffset * Step + 1){
 				ins_source.Play();
 				text.text = "move forward";
@@ -161,6 +162,8 @@ public class Manager : MonoBehaviour {
 						break;
 				}
 			}
+		} else if ((CurrentTick - barOffset * Step - 1 - roundLength * Step) % (roundLength * Step * 2) == 0) {
+			mentor_controller.listen();
 		}
 	}
 

@@ -141,8 +141,9 @@ public class MusicAnalysis : MonoBehaviour {
 					if (miss > numMiss) miss = numMiss;
 				}
 			}else{
+				Debug.Log("here");
 				miss = diff_onset.Count;
-				for(int k = 0; k < rhythmTemplate.Length-diff_onset.Count; k++){
+				for(int k = 0; k <= rhythmTemplate.Length-diff_onset.Count; k++){
 					int numMiss = 0;
 					for(int t = k; t < diff_onset.Count; t++){
 						if(rhythmTemplate[t]!=diff_onset[t]) numMiss++;
@@ -174,20 +175,6 @@ public class MusicAnalysis : MonoBehaviour {
 					}
 					miss++;
 				}
-			}
-		} else if (searchMethod == 2) {
-			miss = 0;
-			if (rhythmTemplate.Length == diff_onset.Count){
-				for (int k = 0; k < diff_onset.Count; k++){
-					if (rhythmTemplate[k] != diff_onset[k]){
-						miss = rhythmTemplate.Length;
-						break;
-					}else{
-						miss++;
-					}
-				}
-			} else {
-				miss = rhythmTemplate.Length;
 			}
 		} else {
 			miss = rhythmTemplate.Length;
