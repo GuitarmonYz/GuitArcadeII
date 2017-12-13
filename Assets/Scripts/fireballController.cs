@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class fireballController : MonoBehaviour {
 	public float speed = 1f;
@@ -13,7 +11,6 @@ public class fireballController : MonoBehaviour {
 	void Start () {
 		startTime = Time.time;
 		startPos = transform.position;
-		
 		animator=GetComponent<Animator>();
 	}
 	
@@ -23,10 +20,6 @@ public class fireballController : MonoBehaviour {
 		float fracTime = disCover / length;
 		if (endPos != null){
 			transform.position = Vector2.Lerp(startPos,endPos,fracTime);
-			//Debug.Log(transform.position.x);
-			// if (transform.position.x == endPos.x){
-			// 	animator.SetTrigger("explotion");
-			// }
 		}
 		
 	}
@@ -40,7 +33,6 @@ public class fireballController : MonoBehaviour {
 	{
 		animator.SetTrigger("explotion");
 		if (other.gameObject.CompareTag("shield")){
-			
 			Destroy(other.gameObject);
 		}
 	}

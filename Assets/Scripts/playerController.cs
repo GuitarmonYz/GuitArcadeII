@@ -20,7 +20,7 @@ public class playerController : MonoBehaviour {
 	{
 		rb2d = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
-		content.fillAmount = health/100.0f;
+		if(content != null) content.fillAmount = health/100.0f;
 	}
 	
 	// Update is called once per frame
@@ -81,11 +81,15 @@ public class playerController : MonoBehaviour {
 		
 	}
 
-	/// <summary>
-	/// Sent when another object enters a trigger collider attached to this
-	/// object (2D physics only).
-	/// </summary>
-	/// <param name="other">The other Collider2D involved in this collision.</param>
+	// void OnCollisionEnter2D(Collision2D other)
+	// {
+	// 	Debug.Log("trigger");
+	// 	if (other.gameObject.CompareTag("fireball")){
+	// 		this.health -= 10;
+	// 		content.fillAmount = health/100.0f;
+	// 	}
+	// }
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		Debug.Log("trigger");

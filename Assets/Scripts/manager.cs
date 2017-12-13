@@ -7,6 +7,8 @@ using MidiJack;
 public class Manager : MonoBehaviour {
 	Queue<char> key_input = new Queue<char>();
 	public Text text;
+	public Image flag;
+	private bool colorLerp = true;
 	string move = "move";
 	string back = "back";
 	string dumb = "dumb";
@@ -15,6 +17,7 @@ public class Manager : MonoBehaviour {
 	float pre_position = 0;
 	int[] progress_map = new int[]{0,0,0,0};
 	string[] instruction_map = new string[]{"movef","moveb","attack","defence"};
+	string[] interval_instruction_map = new string[]{"P5","M3","P9","D7"};
 	string[] notice_map = new string[]{"Move forward!", "Move backward!", "Attack!!!", "Defence!!"};
 	int curInstruction = 0;
 	playerController player_controller;
@@ -29,7 +32,6 @@ public class Manager : MonoBehaviour {
 	private MetronomePro metro;
 	AudioSource bt_source;
 	// AudioSource solo_source;
-	float starting_time = 0;
 	// AudioClip[] bt_clips;
 	AudioClip[] ins_clips;
 	private AudioSource metronomeAudioSource;
@@ -38,17 +40,21 @@ public class Manager : MonoBehaviour {
 	private bool firePrepare;
 	private int fireTickCounter;
 	private Dictionary<string, int> instructionToIdx = new Dictionary<string, int>();
+	public int mode = 0;
+	
 	void Awake()
 	{
 		//Object[] bt_clips_raw = Resources.LoadAll("AudioFiles/backing_track", typeof(AudioClip));
 		Object[] ins_clips_raw = Resources.LoadAll("AudioFiles/instruction_rhythm", typeof(AudioClip));
+		Object[] ins_interval_clips_raw = Resources.LoadAll("AudioFiles/instruction_interval", typeof(AudioClip));
 		// bt_clips = new AudioClip[bt_clips_raw.Length];
 		ins_clips = new AudioClip[ins_clips_raw.Length];
-		// for (int i = 0; i<bt_clips_raw.Length;i++){
-		// 	bt_clips[i] = (AudioClip)bt_clips_raw[i];
-		// }
 		for (int i = 0; i<ins_clips_raw.Length;i++){
-			ins_clips[i] = (AudioClip)ins_clips_raw[i];
+			if (mode == 2){
+				ins_clips[i] = (AudioClip)ins_interval_clips_raw[i];
+			} else {
+				ins_clips[i] = (AudioClip)ins_clips_raw[i];
+			}
 			instructionToIdx.Add(ins_clips[i].name, i);
 		}
 		AudioSource[] source_array = GetComponents<AudioSource>();
@@ -58,7 +64,11 @@ public class Manager : MonoBehaviour {
 		metronomeAudioSource = source_array[2];
 
 		// bt_source.clip = bt_clips[0];
-		ins_source.clip = ins_clips[instructionToIdx["movef"]];
+		if(mode == 2){
+			ins_source.clip = ins_clips[instructionToIdx["P5"]];
+		} else {
+			ins_source.clip = ins_clips[instructionToIdx["movef"]];
+		}
 		boss_controller = boss.GetComponent<bossController>();
 		boss_renderer = boss.GetComponent<SpriteRenderer>();
 		mentor_controller = mentor.GetComponent<mentorController>();
@@ -70,19 +80,21 @@ public class Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		text.text = "";
+		text.text = "welcome!";
 		firePrepare = false;
 		//boss_controller = boss.GetComponent<bossController>();
 		pre_position = player.transform.position.x;
 		// bt_source.Play();
 		// solo_source.Play();
 		// metro.Play();
-		starting_time = Time.time;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		keyStore();
+		if (colorLerp){
+			flag.color = Color.Lerp(Color.white,Color.clear,Mathf.PingPong(Time.time/0.5f, 1));
+		} 
 		if (player.transform.position.x > pre_position + 1.92f){
 			player_controller.stop();
 			//boss_controller.stop();
@@ -111,10 +123,14 @@ public class Manager : MonoBehaviour {
 		return instruction_map[curInstruction];
 	}
 
+	public string checkProgressInterval(){
+		return interval_instruction_map[curInstruction];
+	}
+
 	public void incrementProgress(bool succeed){
 		if (succeed) {
 			progress_map[curInstruction]++;
-			if (progress_map[curInstruction]>=4) curInstruction++;
+			if (progress_map[curInstruction]>=2) curInstruction++;
 		}
 	}
 
@@ -125,9 +141,60 @@ public class Manager : MonoBehaviour {
 	public IEnumerator OnTick (int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength, int Mode) {
 		metronomeAudioSource.Play ();
 		if (CurrentTick >= barOffset * Step){
-			StartCoroutine(monsterMode(CurrentTick, songTickTimes, barOffset, Step, roundLength));
+			if (mode == 0){
+				StartCoroutine(mentorMode(CurrentTick, songTickTimes, barOffset, Step, roundLength));
+			}else if (mode == 1){
+				StartCoroutine(monsterMode(CurrentTick, songTickTimes, barOffset, Step, roundLength));
+			} else if (mode == 2) {
+				StartCoroutine(mentorIntervalMode(CurrentTick, songTickTimes, barOffset, Step, roundLength*2));
+			}
+			
 		}
 		yield return null;
+	}
+
+	private IEnumerator mentorIntervalMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
+		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+			mentor_controller.teach();
+			if (CurrentTick == barOffset * Step + 1){
+				ins_source.Play();
+				text.text = "move forward";
+			} else {
+				string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes, mode);
+				if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgressInterval()]];
+				yield return null;
+				ins_source.Play();
+				text.text = notice_map[curInstruction];
+				switch (instruction){
+					case "P5":
+						//text.text = "move forward";
+						player_controller.move(2);
+						mentor_controller.move(2);
+						pre_position = player.transform.position.x;
+						break;
+					case "M3":
+						//text.text = "move backward";
+						player_controller.move(-2);
+						mentor_controller.move(-2);
+						pre_position = player.transform.position.x;
+						break;
+					case "P9":
+						//text.text = "attack";
+						player_controller.throw_spear();
+						break;
+					case "D7":
+						//text.text = "defence";
+						player_controller.use_shield();
+						break;
+					case "failed":
+						text.text = "failed";
+						Debug.Log("failed");
+						break;
+				}
+			}
+		} else if ((CurrentTick - barOffset * Step - 1 - roundLength * Step) % (roundLength * Step * 2) == 0) {
+			mentor_controller.listen();
+		}
 	}
 
 	private IEnumerator mentorMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
@@ -137,7 +204,7 @@ public class Manager : MonoBehaviour {
 				ins_source.Play();
 				text.text = "move forward";
 			} else {
-				string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+				string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes, mode);
 				if(!ins_source.isPlaying) ins_source.clip = ins_clips[instructionToIdx[checkProgress()]];
 				yield return null;
 				ins_source.Play();
@@ -176,6 +243,7 @@ public class Manager : MonoBehaviour {
 
 	private IEnumerator monsterMode(int CurrentTick, List<double> songTickTimes, int barOffset, int Step, int roundLength){
 		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
+			colorLerp = true;
 			player_controller.deprepare();
 			if (!firePrepare){
 				int random = Random.Range(1,11);
@@ -192,7 +260,9 @@ public class Manager : MonoBehaviour {
 				}
 			}	
 		} else if ((CurrentTick - barOffset * Step - 1 - roundLength * Step) % (roundLength * Step * 2) == 0) {
-			string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
+			colorLerp = false;
+			flag.color = Color.white;
+			string instruction = musicAnalysis.analysisMusic(CurrentTick, songTickTimes, mode);
 			if(!ins_source.isPlaying && instruction!="failed") ins_source.clip = ins_clips[instructionToIdx[instruction]];
 			yield return null;
 			if (instruction != "failed") ins_source.Play();
