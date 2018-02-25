@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   center: {fileID: 1970963453}
+  meshDrawer: {fileID: 1103457434}
 --- !u!212 &2043920088
 SpriteRenderer:
   m_ObjectHideFlags: 0

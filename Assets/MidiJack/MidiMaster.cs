@@ -95,5 +95,9 @@ namespace MidiJack
         {
             return MidiDriver.Instance.GetKnob(MidiChannel.All, knobNumber, defaultValue);
         }
+        public static float GetDial()
+        {
+            return MidiDriver.Instance.GetDial(MidiChannel.All);
+        }
     }
 }

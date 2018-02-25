@@ -44,10 +44,13 @@ namespace MidiJack
             // Knob number to knob value mapping
             public Dictionary<int, float> _knobMap;
 
+            public float _dial;
+
             public ChannelState()
             {
                 _noteArray = new float[128];
                 _knobMap = new Dictionary<int, float>();
+                _dial = 64;
             }
         }
 
@@ -97,6 +100,12 @@ namespace MidiJack
             var cs = _channelArray[(int)channel];
             if (cs._knobMap.ContainsKey(knobNumber)) return cs._knobMap[knobNumber];
             return defaultValue;
+        }
+
+        public float GetDial(MidiChannel channel){
+            UpdateIfNeeded();
+            var cs = _channelArray[(int)channel];
+            return cs._dial;
         }
 
         #endregion
@@ -235,11 +244,17 @@ namespace MidiJack
                         noteOffDelegate((MidiChannel)channelNumber, message.data1);
                 }
 
+                if (statusCode == 0xe) {
+                    //Debug.Log(message.data2);
+                    _channelArray[(int)MidiChannel.All]._dial = message.data2;
+                }
+
                 // CC message?
                 if (statusCode == 0xb)
                 {
                     // Normalize the value.
                     var level = 1.0f / 127 * message.data2;
+                    //Debug.Log(message.data1);
                     // Update the channel if it already exists, or add a new channel.
                     _channelArray[channelNumber]._knobMap[message.data1] = level;
                     // Do again for All-ch.
