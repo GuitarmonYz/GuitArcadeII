@@ -1,51 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using MidiJack;
 public class arrowController : MonoBehaviour {
 	public GameObject center;
 	public GameObject meshDrawer;
+	public GameObject canvasObject;
 	private MeshTest meshTest;
 	private string[] circleOfFifths = {"C", "G", "D", "A", "E", "B", "F#", "Db", "Ab", "Eb", "Bb", "F"};
 	private Vector2[] circlePos = new Vector2[12];
+	private Text[] noteNames = new Text[12];
 	private string[] midiNames = {"C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"};
 	// private string preNote = "C";
 	private int questionNote;
 	private int targetNote;
 	private float angle = 0;
 	private float radius = 3.56f;
+	private float radiusInPixal = 340f;
 	private bool isQuestionNote = true;
 	private int[] dominantChord = new int[]{0,1,4,10};
 	private int[] maj7Chord = new int[]{0,1,4,5};
+	private AudioClip[] audioClips;
+	private AudioSource audioSource;
 	private bool meshGenerated = false;
 	private Queue inputBuffer = new Queue();
 	private Dictionary<int, bool> chordDic = new Dictionary<int, bool>();
 	// Use this for initialization
 	void Awake()
 	{
-		
+		Object[] chords_clips_raw = Resources.LoadAll("AudioFiles/circle_of_fifth_chords", typeof(AudioClip));
+		audioClips = new AudioClip[chords_clips_raw.Length];
+		for (int i = 0; i < chords_clips_raw.Length; i++) {
+			audioClips[i] = (AudioClip) chords_clips_raw[i];
+		}
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	void Start () {
-		questionNote = Random.Range(0, circleOfFifths.Length-1);
-		targetNote = (questionNote + 1) % 12;
+		//targetNote = Random.Range(0, circleOfFifths.Length-1);
+		targetNote = circleOfFifths.Length-1;
+		questionNote = (targetNote + 1) % 12;
 		for (int i = 0; i < 12; i++) {
 			float angle = findAngle(circleOfFifths[i]);
 			circlePos[i] = new Vector2(radius * Mathf.Sin(Mathf.Deg2Rad * angle), radius * Mathf.Cos(Mathf.Deg2Rad * angle));
+			Vector3 uiPos = new Vector3(radiusInPixal * Mathf.Sin(Mathf.Deg2Rad * angle), radiusInPixal * Mathf.Cos(Mathf.Deg2Rad * angle), 0);
+			noteNames[i] = drawNoteNameUI(uiPos, circleOfFifths[i]);
+			noteNames[i].enabled = false;
 		}
 		meshTest = meshDrawer.GetComponent<MeshTest>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		// for (int i = 0; i < 128; i++) {
-		// 	if (MidiMaster.GetKeyDown(i)) {
-		// 		string curNote = noteNum2Name(i);
-		// 		rotate(preNote, curNote);
-		// 		preNote = curNote;
-		// 	}
-		// }
 
 		for (int i = 0; i < 128; i++) {
 			if (MidiMaster.GetKeyDown(i)) {
@@ -57,69 +64,120 @@ public class arrowController : MonoBehaviour {
 				}
 			}
 		}
-		// if (Input.GetKeyDown("e")) {
-		// 	Vector2[] vertices2D = new Vector2[] {
-		// 		circlePos[0],
-		// 		circlePos[1],
-		// 		circlePos[4],
-		// 		circlePos[5]
-		// 	};
-		// 	meshTest.drawMesh(vertices2D);
-		// }
-		// if (Input.GetKeyDown("r")) {
-		// 	Vector2[] vertices2D = new Vector2[] {
-		// 		circlePos[0],
-		// 		circlePos[2],
-		// 		circlePos[5],
-		// 		circlePos[8]
-		// 	};
-		// 	meshTest.drawMesh(vertices2D);
-		// }
+
 		float dial = MidiMaster.GetDial();
 		if (dial > 64) {
 			angle += rotate(true, (dial-64)/64f * 60f + 20f);
 		} else if (MidiMaster.GetDial() < 64) {
 			angle -= rotate(false, (64 - dial)/64f * 60f + 20f);
 		}
+
 		if (isQuestionNote) {
 			if (angle <= questionNote * 30 + 2 && angle >= questionNote * 30 - 2) {
-				Debug.Log("found question note " + circleOfFifths[questionNote]);
-				Debug.Log("play question note " + circleOfFifths[questionNote] + "7");
+				if (!audioSource.isPlaying) {
+					audioSource.clip = findClipIdx(questionNote, true);
+					audioSource.Play();
+				}
+				
+				// Debug.Log("found question note " + circleOfFifths[questionNote]);
+				// Debug.Log("play question note " + circleOfFifths[questionNote] + "7");
+				toggleNoteNameUI(questionNote, dominantChord, true);
 				if (!meshGenerated){
-					generateMesh(dominantChord);
+					generateMesh(dominantChord, questionNote);
 					meshGenerated = true;
 				}
 				if (isConfirmed(isQuestionNote)) {
 					isQuestionNote = false;
 					meshTest.clearMesh();
 					meshGenerated = false;
+					toggleNoteNameUI(questionNote, dominantChord, false);
+					inputBuffer.Clear();
+					audioSource.Stop();
 				}
 			} else {
+				if (audioSource.isPlaying) audioSource.Stop();
 				meshTest.clearMesh();
 				meshGenerated = false;
+				toggleNoteNameUI(questionNote, dominantChord, false);
 			}
 		} else {
 			if (angle <= targetNote * 30 + 2 && angle >= targetNote * 30 - 2) {
 				Debug.Log("found target note " + circleOfFifths[targetNote]);
 				Debug.Log("play question note " + circleOfFifths[targetNote] + "maj7");
+				if (!audioSource.isPlaying) {
+					audioSource.clip = findClipIdx(targetNote, false);
+					audioSource.Play();
+				}
+				toggleNoteNameUI(targetNote, maj7Chord, true);
 				if (!meshGenerated) {
-					generateMesh(maj7Chord);
+					generateMesh(maj7Chord, targetNote);
 					meshGenerated = true;
 				}
 				if (isConfirmed(isQuestionNote)) {
-
+					isQuestionNote = true;
+					meshTest.clearMesh();
+					meshGenerated = false;
+					toggleNoteNameUI(targetNote, maj7Chord, false);
+					targetNote = Random.Range(0, circleOfFifths.Length-1);
+					questionNote = (targetNote + 1) % 12;
+					Debug.Log(questionNote);
+					inputBuffer.Clear();
+					audioSource.Stop();
 				}
 			} else {
+				if (audioSource.isPlaying) audioSource.Stop();
 				meshTest.clearMesh();
 				meshGenerated = false;
+				toggleNoteNameUI(targetNote, maj7Chord, false);
+				
 			}
 		}
 	}
 
-	private void generateMesh(int[] notes){
+	private AudioClip findClipIdx(int note, bool isDominant){
+		string chord_name = circleOfFifths[note];
+		AudioClip res = null;
+		foreach(AudioClip ac in audioClips) {
+			string[] nameArray = ac.name.Split('_');
+			if (nameArray[0].Equals(chord_name)) {
+				if (isDominant) {
+					if(nameArray[1].Equals("7")) {
+						res = ac;
+					}
+				} else {
+					if (nameArray[1].Equals("Maj7")) {
+						res = ac;
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	private Text drawNoteNameUI(Vector3 position, string text) {
+		GameObject ngo = new GameObject(text);
+		ngo.transform.SetParent(canvasObject.transform);
+		Text myText = ngo.AddComponent<Text>();
+		Font ArialFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
+     	myText.font = ArialFont;
+		myText.fontSize = 42;
+		myText.text = text; 
+		myText.alignment = TextAnchor.MiddleCenter;
+		myText.rectTransform.localPosition = position;
+		myText.rectTransform.localScale = new Vector3(1,1,1);
+		return myText;
+	}
+
+	private void toggleNoteNameUI(int note, int[] chord, bool enabled){
+		for (int i = 0; i < chord.Length; i++) {
+			noteNames[(note+chord[i])%12].enabled = enabled;
+		}
+	}
+
+	private void generateMesh(int[] notes, int note){
 		Vector2[] vertices2D = new Vector2[notes.Length];
 		for (int i = 0; i < notes.Length; i++) {
-			vertices2D[i] = circlePos[(questionNote+notes[i])%12];
+			vertices2D[i] = circlePos[(note+notes[i])%12];
 		}
 		meshTest.drawMesh(vertices2D);
 	}
@@ -132,13 +190,14 @@ public class arrowController : MonoBehaviour {
 			}
 		} else {
 			for (int i = 0; i < maj7Chord.Length; i++) {
-				chordDic.Add(midiName2noteNum(circleOfFifths[(questionNote + maj7Chord[i])%12]), false);
+				chordDic.Add(midiName2noteNum(circleOfFifths[(targetNote + maj7Chord[i])%12]), false);
 			}
 		}
 		foreach(int note in inputBuffer) {
-			if (chordDic.ContainsKey(note)) {
-				chordDic[note] = true;
+			if (chordDic.ContainsKey(note%12)) {
+				chordDic[note%12] = true;
 			}
+			
 		}
 		foreach (bool val in chordDic.Values) {
 			if (!val) return false;
