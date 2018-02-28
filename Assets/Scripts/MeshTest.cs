@@ -67,7 +67,9 @@ public class MeshTest : MonoBehaviour
 	}
 
 	public void clearMesh() {
-		this.mesh.Clear();
+		if (this.mesh != null) {
+			this.mesh.Clear();
+		}
 	}
 	
 	void Update()

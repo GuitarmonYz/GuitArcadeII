@@ -21,6 +21,11 @@ public class arrowController : MonoBehaviour {
 	private Queue inputBuffer = new Queue();
 	private Dictionary<int, bool> chordDic = new Dictionary<int, bool>();
 	// Use this for initialization
+	void Awake()
+	{
+		
+	}
+
 	void Start () {
 		questionNote = Random.Range(0, circleOfFifths.Length-1);
 		targetNote = (questionNote + 1) % 12;
@@ -90,6 +95,7 @@ public class arrowController : MonoBehaviour {
 					meshGenerated = false;
 				}
 			} else {
+				meshTest.clearMesh();
 				meshGenerated = false;
 			}
 		} else {
@@ -104,6 +110,7 @@ public class arrowController : MonoBehaviour {
 
 				}
 			} else {
+				meshTest.clearMesh();
 				meshGenerated = false;
 			}
 		}
