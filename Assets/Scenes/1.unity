@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -1952,11 +1952,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010623070762, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4000010623070762, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4000010623070762, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1964,15 +1964,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010623070762, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4000010623070762, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4000010623070762, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4567c0c8c720c0f458539ddd09c2f29b, type: 2}
