@@ -16,9 +16,10 @@ public class wu_EnemyController : MonoBehaviour {
 		playerController = player.GetComponent<wu_PlayerController>();
 		rg2d = GetComponent<Rigidbody2D>();
 		time = Time.time;
-		// rg2d.velocity = new Vector3(4,0,0);
-		force = new Vector2(5,0);
-		rg2d.AddForce(force);
+		rg2d.velocity = new Vector2(3,0);
+		Debug.Log(rg2d.velocity);
+		// force = new Vector2(5,0);
+		// rg2d.AddForce(force);
 		Flip();
 	}
 	
@@ -27,15 +28,18 @@ public class wu_EnemyController : MonoBehaviour {
 		Patrol();
 	}
 	public void Patrol() {
+		// Debug.Log(rg2d.velocity);
 		if (Time.time > time + 1) {
-			// Vector3 preVelocity = rg2d.velocity;
-			// preVelocity.x *= -1;
-			// rg2d.velocity = preVelocity;
-			force.x *= -1;
+			Vector2 preVelocity = rg2d.velocity;
+			// Debug.Log(preVelocity);
+			preVelocity.x *= -1;
+			// Debug.Log(preVelocity);
+			rg2d.velocity = preVelocity;
+			// force.x *= -1;
 			time = Time.time;
 			Flip();
 		}
-		rg2d.AddForce(force);
+		// rg2d.AddForce(force);
 
 		// rg2d.velocity = new Vector3(2,0,0);
 	}
