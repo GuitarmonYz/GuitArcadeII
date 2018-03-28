@@ -6,23 +6,19 @@ using UnityEngine.UI;
 public class wu_Manager : MonoBehaviour {
 	wu_PlayerController playerController;
 	public GameObject wu_player;
-	GameObject[] enemies;
-	ArrayList enemiesPos = new ArrayList(); 
 	bool behaviourRight = true;
 	string[] chordList = {"Dm7", "G7", "Cmaj7"};
 	Vector3 initFloorPos = new Vector3(1.5f, 2.5f, 0);
 	float floorHight = 2.4f;
 	public GameObject floor;
 	public GameObject chordLabel;
+	private StateController stateController;
 	// Use this for initialization
 	void Start () {
 		playerController = wu_player.GetComponent<wu_PlayerController>();
-		// enemies = GameObject.FindGameObjectsWithTag("enemy");
-		// foreach (GameObject enemy in enemies) {
-		// 	enemiesPos.Add(enemy.transform.position);
-		// }
+		stateController = wu_player.GetComponent<StateController>();
 		initMap(chordList);
-
+		stateController.SetupAI(playerController);
 	}
 	
 	// Update is called once per frame

@@ -6,6 +6,8 @@ public class wu_PlayerController : MonoBehaviour {
 	Animator animator;
 	Rigidbody2D rigidbody;
 	bool faceRight = true;
+	int curFloor = 0;
+	public float speed = 2f;
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
@@ -19,19 +21,7 @@ public class wu_PlayerController : MonoBehaviour {
 	void Update () {
 		// animator.SetFloat("walk", rigidbody.velocity.x);
 	}
-	public void Attack(ArrayList enemysPoses) {
-		// rigidbody.velocity = new Vector2(0,0);
-		Vector3 curPos = transform.position;
-		foreach(Vector3 enemysPos in enemysPoses) {
-			if (Mathf.Abs(enemysPos.x - curPos.x) < 0.5 && Mathf.Abs(enemysPos.y - curPos.y) < 0.3) {
-				if (!animator.GetBool("attack"))
-					animator.SetBool("attack", true);
-				break;
-			} else {
-				animator.SetBool("attack", false);
-			}
-		}
-	}
+	
 	public void Patrol(){
 		if (!animator.GetBool("attack")) {
 			if (faceRight) {
@@ -42,7 +32,7 @@ public class wu_PlayerController : MonoBehaviour {
 		}
 	}
 	public void Flip() {
-		faceRight = !faceRight;
+		// faceRight = !faceRight;
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
@@ -58,10 +48,36 @@ public class wu_PlayerController : MonoBehaviour {
 		rigidbody.velocity = finalVelocity;
 	}
 
+	public void moveToNextStage() {
+		if (curFloor%2 == 0) {
+			faceRight = true;
+			if (rigidbody.velocity.x <= 0){
+				rigidbody.velocity = new Vector2(speed, rigidbody.velocity.y);
+				animator.SetFloat("walk", rigidbody.velocity.x);
+			}
+		} else {
+			faceRight = false;
+			if (rigidbody.velocity.x >= 0) {
+				rigidbody.velocity = new Vector2(-speed, rigidbody.velocity.y);
+			}
+		}
+	}
+
+	public Rigidbody2D GetRigidbody(){
+		return this.rigidbody;
+	}
+
 	public bool getAttackState(){
 		return animator.GetBool("attack");
 	}
 	public void setAttackState(bool val){
 		animator.SetBool("attack", val);
+	}
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if (other.gameObject.CompareTag("floor")) {
+			int.TryParse(other.gameObject.name.Split('_')[1], out curFloor);
+			if (curFloor != 0) Flip();
+		}
 	}
 }
