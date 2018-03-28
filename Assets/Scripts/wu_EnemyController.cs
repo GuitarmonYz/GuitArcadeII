@@ -17,15 +17,18 @@ public class wu_EnemyController : MonoBehaviour {
 		rg2d = GetComponent<Rigidbody2D>();
 		time = Time.time;
 		rg2d.velocity = new Vector2(3,0);
-		Debug.Log(rg2d.velocity);
-		// force = new Vector2(5,0);
-		// rg2d.AddForce(force);
 		Flip();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		Patrol();
+		RaycastHit2D hit2D;
+		hit2D = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f, transform.position.y), transform.right, 10);
+		Debug.DrawRay(new Vector3(transform.position.x + 0.5f, transform.position.y, transform.position.z), transform.right, Color.blue);
+		if (hit2D != false) {
+			Debug.Log(hit2D.collider.tag);
+		}
 	}
 	public void Patrol() {
 		// Debug.Log(rg2d.velocity);
@@ -38,12 +41,12 @@ public class wu_EnemyController : MonoBehaviour {
 			// force.x *= -1;
 			time = Time.time;
 			Flip();
+			// Debug.Log(transform.right);
 		}
-		// rg2d.AddForce(force);
-
-		// rg2d.velocity = new Vector3(2,0,0);
 	}
-	void OnTriggerEnter2D (Collider2D other){
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		Debug.Log("enter");
 		if (other.gameObject.CompareTag ("Player")) {
 			// wu_PlayerController playerController = other.gameObject.GetComponent<wu_PlayerController>();
 			if (playerController.getAttackState()){
@@ -53,6 +56,9 @@ public class wu_EnemyController : MonoBehaviour {
 				playerController.setAttackState(false);
 				this.gameObject.SetActive(false);
 			}
+		}
+		if (other.gameObject.CompareTag("floor")) {
+			Debug.Log(other.gameObject.name);
 		}
 	}
 	public void Flip() {
