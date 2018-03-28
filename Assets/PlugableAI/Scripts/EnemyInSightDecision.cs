@@ -1,16 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class EnemyInSightDecision : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+[CreateAssetMenu (menuName = "PluggableAI/Decisions/EnemyInSight")]
+public class EnemyInSightDecision : FSM_Decision {
+	public override bool Decide(StateController controller) {
+		return controller.playerController.EnemyInSight();
 	}
 }

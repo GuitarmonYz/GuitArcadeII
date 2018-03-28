@@ -8,6 +8,7 @@ TagManager:
   - fireball
   - monster
   - enemy
+  - floor
   layers:
   - Default
   - TransparentFX

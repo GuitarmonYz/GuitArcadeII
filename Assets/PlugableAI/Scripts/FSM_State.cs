@@ -8,7 +8,7 @@ public class FSM_State : ScriptableObject {
 	public FSM_Transition[] transitions;
 	public void updateState(StateController controller){
 		doActions(controller);
-		// checkTransitions(controller);
+		checkTransitions(controller);
 	}
 	private void doActions(StateController controller) {
 		for (int i = 0; i < actions.Length; i++) {

@@ -8,6 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e102e64f1224e44538d94cc1825a0ecd, type: 3}
-  m_Name: MoveToNextFloorAction
+  m_Script: {fileID: 11500000, guid: 597d8900e65624fa382d540f5c6da18c, type: 3}
+  m_Name: RemainInState
   m_EditorClassIdentifier: 
+  actions: []
+  transitions: []

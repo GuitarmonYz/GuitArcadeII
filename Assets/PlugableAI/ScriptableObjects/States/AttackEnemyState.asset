@@ -9,11 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 597d8900e65624fa382d540f5c6da18c, type: 3}
-  m_Name: MoveToNextFloor
+  m_Name: AttackEnemyState
   m_EditorClassIdentifier: 
   actions:
-  - {fileID: 11400000, guid: a58fbf660cc7e4eff96a4823949b60ce, type: 2}
+  - {fileID: 11400000, guid: 2f75c5ec9284a4c7eb57ddf27d0d0b7e, type: 2}
   transitions:
-  - decision: {fileID: 11400000, guid: f155d316a18f24ce1a381c188f88f590, type: 2}
-    trueState: {fileID: 11400000, guid: 7882ef51ecba344feb067578732a76c9, type: 2}
-    falseState: {fileID: 11400000, guid: c08a271dcfdd042a4bbea0f0a336f6f2, type: 2}
+  - decision: {fileID: 11400000, guid: 69151b15f61ea4a29b3a25a75a153de3, type: 2}
+    trueState: {fileID: 11400000, guid: c08a271dcfdd042a4bbea0f0a336f6f2, type: 2}
+    falseState: {fileID: 11400000, guid: fa2e08870c19d4ca792338f8e856da47, type: 2}

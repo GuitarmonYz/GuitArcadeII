@@ -44,23 +44,32 @@ public class wu_EnemyController : MonoBehaviour {
 			// Debug.Log(transform.right);
 		}
 	}
-	void OnCollisionEnter2D(Collision2D other)
+	void OnCollisionStay2D(Collision2D other)
 	{
-		Debug.Log("enter");
+		// Debug.Log("enter");
 		if (other.gameObject.CompareTag ("Player")) {
 			// wu_PlayerController playerController = other.gameObject.GetComponent<wu_PlayerController>();
 			if (playerController.getAttackState()){
 				health -= 10;
+				Debug.Log("take damage");
+				rg2d.velocity = new Vector2(0,0);
 			} 
 			if (health <= 0) {
 				playerController.setAttackState(false);
+				playerController.enemyAlive = false;
 				this.gameObject.SetActive(false);
 			}
 		}
 		if (other.gameObject.CompareTag("floor")) {
-			Debug.Log(other.gameObject.name);
+			// Debug.Log(other.gameObject.name);
 		}
 	}
+	// void OnCollisionEnter2D(Collision2D other)
+	// {
+	// 	if (other.gameObject.CompareTag("Player")) {
+	// 		rg2d.velocity = new Vector2(0,0);
+	// 	}	
+	// }
 	public void Flip() {
 		faceRight = !faceRight;
 		Vector3 theScale = transform.localScale;

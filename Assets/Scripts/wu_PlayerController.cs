@@ -7,11 +7,16 @@ public class wu_PlayerController : MonoBehaviour {
 	Rigidbody2D rigidbody;
 	bool faceRight = true;
 	int curFloor = 0;
-	public float speed = 2f;
+	public float speed = 1f;
+	public Vector2 curEnemyPos;
+	private GameObject rayEye;
+	[HideInInspector] public bool enemyAlive = false;
+	private float lastTime;
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody2D>();
+		rayEye = transform.GetChild(0).gameObject;
 		Vector2 cur_position = new Vector2(transform.position.x, transform.position.y);
 		Vector2 target = new Vector2(-3.45f, -0.19f);
 		// jumpToNextStage(cur_position, target, 60f);
@@ -23,12 +28,16 @@ public class wu_PlayerController : MonoBehaviour {
 	}
 	
 	public void Patrol(){
-		if (!animator.GetBool("attack")) {
-			if (faceRight) {
-				rigidbody.velocity = new Vector2(2, rigidbody.velocity.y);
+		if (Time.time > lastTime + 1) {
+			if (rigidbody.velocity.x <= 0) {
+				rigidbody.velocity = new Vector2(1, 0);
+				Flip();
 			} else {
-				rigidbody.velocity = new Vector2(-2, rigidbody.velocity.y);
+				rigidbody.velocity = new Vector2(-1, 0);
+				Flip();
 			}
+			animator.SetFloat("walk", Mathf.Abs(rigidbody.velocity.x));
+			lastTime = Time.time;
 		}
 	}
 	public void Flip() {
@@ -49,22 +58,78 @@ public class wu_PlayerController : MonoBehaviour {
 	}
 
 	public void moveToNextStage() {
+		setAttackState(false);
+		Debug.Log(rigidbody.velocity.x);
 		if (curFloor%2 == 0) {
 			faceRight = true;
-			if (rigidbody.velocity.x <= 0){
+			if (rigidbody.velocity.x <= 0.5f){
 				rigidbody.velocity = new Vector2(speed, rigidbody.velocity.y);
-				animator.SetFloat("walk", rigidbody.velocity.x);
+				animator.SetFloat("walk", Mathf.Abs(rigidbody.velocity.x));
 			}
 		} else {
 			faceRight = false;
-			if (rigidbody.velocity.x >= 0) {
+			if (rigidbody.velocity.x >= -0.5f) {
 				rigidbody.velocity = new Vector2(-speed, rigidbody.velocity.y);
 			}
 		}
 	}
 
-	public Rigidbody2D GetRigidbody(){
-		return this.rigidbody;
+	public void chaseEnemy() {
+		if (curFloor%2 == 0) {
+			if (curEnemyPos.x >= transform.position.x){
+				rigidbody.velocity = new Vector2(speed * 2, rigidbody.velocity.y);
+				animator.SetFloat("walk", Mathf.Abs(rigidbody.velocity.x));
+			} else {
+				rigidbody.velocity = new Vector2(speed * -2, rigidbody.velocity.y);
+			}
+		} else {
+			if (curEnemyPos.x >= transform.position.x) {
+				rigidbody.velocity = new Vector2(speed * 2, rigidbody.velocity.y);
+			} else {
+				rigidbody.velocity = new Vector2(speed * -2, rigidbody.velocity.y);
+				animator.SetFloat("walk", Mathf.Abs(rigidbody.velocity.x));
+			}
+		}
+	}
+
+	public bool EnemyInSight() {
+		RaycastHit2D hit2D;
+		Vector3 rayEyePos = rayEye.transform.position;
+		bool findRes = false;
+		enemyAlive = true;
+		hit2D = Physics2D.Raycast(new Vector2(rayEyePos.x , rayEyePos.y), rayEye.transform.right * (faceRight ? 1 : -1), 3);
+		Debug.DrawRay(new Vector3(rayEyePos.x , rayEyePos.y, rayEyePos.z) , rayEye.transform.right * (faceRight ? 1 : -1), Color.red);
+		if (hit2D != false && hit2D.collider.tag == "enemy") {
+			findRes = true;
+			curEnemyPos = hit2D.collider.gameObject.transform.position;
+		}
+		return findRes;
+	}
+
+	public bool EnemyInRange() {
+		RaycastHit2D hit2D;
+		Vector3 rayEyePos = rayEye.transform.position;
+		bool findRes = false;
+		hit2D = Physics2D.Raycast(new Vector2(rayEyePos.x , rayEyePos.y), rayEye.transform.right * (faceRight ? 1 : -1), 5);
+		Debug.DrawRay(new Vector3(rayEyePos.x , rayEyePos.y, rayEyePos.z) , rayEye.transform.right * (faceRight ? 1 : -1), Color.red);
+		if (hit2D != false && hit2D.collider.tag == "enemy") {
+			curEnemyPos = hit2D.collider.gameObject.transform.position;
+			if (Mathf.Abs(curEnemyPos.x - transform.position.x) < 2f) {
+				findRes = true;
+			}
+		}
+		return findRes;
+	}
+
+	public void Attack() {
+		animator.SetBool("attack", true);
+		// rigidbody.velocity = new Vector2(0,0);
+	}
+
+	public bool CurEnemyAlive() {
+		// animator.SetBool("attack", false);
+		// Debug.Log(enemyAlive);
+		return enemyAlive;
 	}
 
 	public bool getAttackState(){

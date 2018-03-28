@@ -8,6 +8,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e102e64f1224e44538d94cc1825a0ecd, type: 3}
-  m_Name: MoveToNextFloorAction
+  m_Script: {fileID: 11500000, guid: cd7f48d6c60be437c96865b39eba38a8, type: 3}
+  m_Name: ChaseEnemyAction
   m_EditorClassIdentifier: 

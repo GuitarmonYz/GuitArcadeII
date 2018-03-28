@@ -9,11 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 597d8900e65624fa382d540f5c6da18c, type: 3}
-  m_Name: MoveToNextFloor
+  m_Name: ChaseEnemy
   m_EditorClassIdentifier: 
   actions:
-  - {fileID: 11400000, guid: a58fbf660cc7e4eff96a4823949b60ce, type: 2}
+  - {fileID: 11400000, guid: 06759e481ae1f4d6eb9ac9f9d4a7cbe6, type: 2}
   transitions:
-  - decision: {fileID: 11400000, guid: f155d316a18f24ce1a381c188f88f590, type: 2}
-    trueState: {fileID: 11400000, guid: 7882ef51ecba344feb067578732a76c9, type: 2}
+  - decision: {fileID: 11400000, guid: 7a231ca4b975342a49fac5d758e4dcd3, type: 2}
+    trueState: {fileID: 11400000, guid: 59866fc044a0a4b1884506f7f35c0e0e, type: 2}
     falseState: {fileID: 11400000, guid: c08a271dcfdd042a4bbea0f0a336f6f2, type: 2}

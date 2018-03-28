@@ -26,7 +26,13 @@ public class StateController : MonoBehaviour {
 	
 	void Update()
 	{
-		curState.updateState(this);
+		
+		if (Input.GetKey("f")) {
+			curState.updateState(this);
+		} else {
+			playerController.Patrol();
+		}
+		
 	}
 	public void TransitionToState(FSM_State nextState) {
 		if (nextState != remainState) {

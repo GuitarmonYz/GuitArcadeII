@@ -1,16 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[CreateAssetMenu (menuName="PluggableAI/Actions/ChaseEnemy")]
 public class PlayerChaseAction : FSM_Action {
-
-	// Use this for initialization
 	public override void Act(StateController controller) {
-		chaseEnemy(controller);
-	}
-
-	private void chaseEnemy(StateController controller) {
-		// controller.playerController
-		controller.playerController.GetRigidbody().velocity *= 2;
+		controller.playerController.chaseEnemy();
 	}
 }
