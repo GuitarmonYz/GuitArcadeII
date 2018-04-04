@@ -10,6 +10,8 @@ public class wu_PlayerController : MonoBehaviour {
 	int nextFloor = 1;
 	public float speed = 1f;
 	public Vector2 curEnemyPos;
+	public GameObject _camera;
+	private wu_CameraController cameraController;
 	private GameObject rayEye;
 	[HideInInspector] public bool enemyAlive = false;
 	private float nextTime = 0;
@@ -21,6 +23,7 @@ public class wu_PlayerController : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody2D>();
 		rayEye = transform.GetChild(0).gameObject;
+		cameraController = _camera.GetComponent<wu_CameraController>();
 		Vector2 cur_position = new Vector2(transform.position.x, transform.position.y);
 		Vector2 target = new Vector2(-3.45f, -0.19f);
 		nextTime = Time.time + 1;
@@ -199,6 +202,7 @@ public class wu_PlayerController : MonoBehaviour {
 			grounded = true;
 			int.TryParse(other.gameObject.name.Split('_')[1], out curFloor);
 			if (curFloor != 0) Flip();
+			if (curFloor != 0 && curFloor%2==0) cameraController.turnOnScroll();
 		}
 	}
 	

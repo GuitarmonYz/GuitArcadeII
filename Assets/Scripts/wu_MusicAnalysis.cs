@@ -15,4 +15,8 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			MidiMaster.GetKey(i);
 		}
 	}
+
+	public void checkChordCorrect(){
+		
+	}
 }
