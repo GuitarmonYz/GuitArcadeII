@@ -8,35 +8,26 @@ public class wu_Manager : MonoBehaviour {
 	public GameObject wu_player;
 	bool behaviourRight = true;
 	string[] chordList = {"Dm7", "G7", "Cmaj7"};
-	Vector3 initFloorPos = new Vector3(1.5f, 2.5f, 0);
-	float floorHight = 2.4f;
+	Vector3 initFloorPos = new Vector3(2.5f, 2.5f, 0);
+	float floorHight = 2.4f + 1;
 	public GameObject floor;
 	public GameObject chordLabel;
 	private StateController stateController;
+	private wu_metronome metronome;
 	// Use this for initialization
 	void Start () {
 		playerController = wu_player.GetComponent<wu_PlayerController>();
 		stateController = wu_player.GetComponent<StateController>();
+		metronome = GetComponent<wu_metronome>();
+		metronome.Play();
 		initMap(chordList);
 		stateController.SetupAI(playerController);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// updateEnemyPos();
-		// if (behaviourRight) {
-		// 	playerController.Patrol();
-		// 	playerController.Attack(enemiesPos);
-		// } else {
-		// 	playerController.Patrol();
-		// }
+		
 	}
-	// void updateEnemyPos(){
-	// 	enemiesPos.Clear();
-	// 	foreach (GameObject enemy in enemies) {
-	// 		enemiesPos.Add(enemy.transform.position);
-	// 	}
-	// }
 	void initMap(string[] chordList){
 		Vector3 curFloorPos = initFloorPos;
 		for (int i = 0; i < chordList.Length; i++) {
@@ -48,5 +39,8 @@ public class wu_Manager : MonoBehaviour {
 			newChordLabel.GetComponentInChildren<Text>().text = chordList[i];
 			curFloorPos.y -= floorHight;
 		}
+	}
+	public void incrementPlayerTick(){
+		playerController.incrementTick();
 	}
 }

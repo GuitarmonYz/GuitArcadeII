@@ -9,6 +9,7 @@ TagManager:
   - monster
   - enemy
   - floor
+  - ninja_bullet
   layers:
   - Default
   - TransparentFX

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 597d8900e65624fa382d540f5c6da18c, type: 3}
+  m_Name: JumpToNextStage
+  m_EditorClassIdentifier: 
+  actions:
+  - {fileID: 11400000, guid: aad0856a25ea949fd8b42b9063e415ef, type: 2}
+  transitions:
+  - decision: {fileID: 11400000, guid: 634585811be724c1d84af233c52271ed, type: 2}
+    trueState: {fileID: 11400000, guid: fa2e08870c19d4ca792338f8e856da47, type: 2}
+    falseState: {fileID: 11400000, guid: c08a271dcfdd042a4bbea0f0a336f6f2, type: 2}

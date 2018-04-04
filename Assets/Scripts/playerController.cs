@@ -78,7 +78,6 @@ public class playerController : MonoBehaviour {
 			new_spear = Instantiate(spear, tarPos, Quaternion.identity);
 			new_spear.transform.parent = this.transform;
 		}
-		
 	}
 
 	// void OnCollisionEnter2D(Collision2D other)

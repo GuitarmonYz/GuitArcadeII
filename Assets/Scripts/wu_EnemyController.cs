@@ -8,30 +8,44 @@ public class wu_EnemyController : MonoBehaviour {
 	wu_PlayerController playerController;
 	Rigidbody2D rg2d;
 	Vector2 force;
+	Animator animator;
 	float time;
-	public bool faceRight;
+	private bool faceRight = true;
+	private bool can_attack = true;
+	private bool attacking = false;
+	private float fireRate = 1;
+	private float nextFire = 0;
+	public GameObject bullet;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
 		playerController = player.GetComponent<wu_PlayerController>();
 		rg2d = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
 		time = Time.time;
 		rg2d.velocity = new Vector2(3,0);
-		Flip();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Patrol();
+		if (!attacking) Patrol();
 		RaycastHit2D hit2D;
-		hit2D = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f, transform.position.y), transform.right, 10);
-		Debug.DrawRay(new Vector3(transform.position.x + 0.5f, transform.position.y, transform.position.z), transform.right, Color.blue);
+		hit2D = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y), transform.right * (faceRight ? 1 : -1), 10);
+		Debug.DrawRay(new Vector3(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y, transform.position.z), transform.right * (faceRight ? 1 : -1), Color.blue);
 		if (hit2D != false) {
-			Debug.Log(hit2D.collider.tag);
+			// Debug.Log(hit2D.collider.tag);
+			if (hit2D.collider.tag == "Player") {
+				attacking = true;
+				animator.SetBool("Attack", false);
+				if (Time.time > nextFire) {
+					Attack();
+					nextFire = Time.time + fireRate;
+				}
+			}
 		}
 	}
 	public void Patrol() {
-		// Debug.Log(rg2d.velocity);
+		animator.SetBool("Attack", false);
 		if (Time.time > time + 1) {
 			Vector2 preVelocity = rg2d.velocity;
 			// Debug.Log(preVelocity);
@@ -44,6 +58,16 @@ public class wu_EnemyController : MonoBehaviour {
 			// Debug.Log(transform.right);
 		}
 	}
+
+	public void Attack() {
+		animator.SetBool("Attack", true);
+		Debug.Log("in attack");
+		GameObject newBullet = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+		NinjaBulletController nbc = newBullet.GetComponent<NinjaBulletController>();
+		nbc.setVelocity(rg2d.velocity.x*2);
+		
+	}
+
 	void OnCollisionStay2D(Collision2D other)
 	{
 		// Debug.Log("enter");
@@ -53,10 +77,12 @@ public class wu_EnemyController : MonoBehaviour {
 				health -= 10;
 				Debug.Log("take damage");
 				rg2d.velocity = new Vector2(0,0);
+				animator.SetBool("Hitted", true);
 			} 
 			if (health <= 0) {
 				playerController.setAttackState(false);
 				playerController.enemyAlive = false;
+				animator.SetBool("Hitted", false);
 				this.gameObject.SetActive(false);
 			}
 		}
@@ -64,16 +90,14 @@ public class wu_EnemyController : MonoBehaviour {
 			// Debug.Log(other.gameObject.name);
 		}
 	}
-	// void OnCollisionEnter2D(Collision2D other)
-	// {
-	// 	if (other.gameObject.CompareTag("Player")) {
-	// 		rg2d.velocity = new Vector2(0,0);
-	// 	}	
-	// }
 	public void Flip() {
-		faceRight = !faceRight;
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+		if (theScale.x > 0) {
+			faceRight = true;
+		} else {
+			faceRight = false;
+		}
 	}
 }
