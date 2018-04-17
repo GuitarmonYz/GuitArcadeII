@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu (menuName = "PluggableAI/Decisions/Grounded")]
 public class TouchGroundDecision : FSM_Decision {
 	public override bool Decide(StateController controller) {
-		return controller.playerController.ifGrounded();
+		return controller.playerController.ifNextFloor();
 	}
 }

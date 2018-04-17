@@ -11,3 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CirFifth.unity
     guid: e219c2c37db984373b5b0b40eda50955
+  - enabled: 1
+    path: Assets/Scenes/Mentor.unity
+    guid: 4d7a796fff432476787134b635c48285
+  - enabled: 1
+    path: Assets/Scenes/MelodyDev.unity
+    guid: ea3bc1e43a2ba483cb25220fe0e65075

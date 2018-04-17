@@ -1,38 +1,66 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class wu_PlayerController : MonoBehaviour {
-	Animator animator;
-	Rigidbody2D rigidbody;
-	bool faceRight = true;
-	int curFloor = 0;
-	int nextFloor = 1;
-	public float speed = 1f;
-	public Vector2 curEnemyPos;
-	public GameObject _camera;
-	private wu_CameraController cameraController;
-	private GameObject rayEye;
+	public Image content; // healthbar
+	public GameObject _camera; // moving camera
+	public float speed = 1f; // moving speed
+	[HideInInspector] public Vector2 curEnemyPos;
 	[HideInInspector] public bool enemyAlive = false;
-	private float nextTime = 0;
-	private bool grounded = false;
-	private int tickCount = 0;
-	private int health = 100;
-	// Use this for initialization
+	
+	private Animator animator;
+	private Rigidbody2D rigidbody;
+	private GameObject rayEye; // for enemy raycasting
+	private SpriteRenderer spriteRenderer;
+	private wu_CameraController cameraController; // access camera controller script
+	private wu_MusicAnalysis analyser; // accessing music analysiser
+	private bool faceRight = true; // for facing direction
+	private int preFloor = 0; // for screen scrolling
+	private int curFloor = 0; // indicate current floor
+	private int nextFloor = 1; // indicate whether jumped to next stage
+	private float nextPatrolFlipTime = 0;
+	private bool grounded = false; // whether grounded
+	private int tickCount = 0; // for tracing bar position
+	private int health = 100; // health value
+	private Dictionary<int, string> chordList; //chord list map
+	private bool takingDamage = false;
+	private float damageTime = 0;
+	private float attackSpeed = 0.5f;
 	void Start () {
 		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody2D>();
 		rayEye = transform.GetChild(0).gameObject;
 		cameraController = _camera.GetComponent<wu_CameraController>();
+		analyser = GetComponent<wu_MusicAnalysis>();
+		spriteRenderer = GetComponent<SpriteRenderer>();
 		Vector2 cur_position = new Vector2(transform.position.x, transform.position.y);
 		Vector2 target = new Vector2(-3.45f, -0.19f);
-		nextTime = Time.time + 1;
-		// jumpToNextStage(cur_position, target, 60f);
+		nextPatrolFlipTime = Time.time + 1;
+		chordList = new Dictionary<int, string>(){
+			{0, "Dm"}, {1, "G"}, {2, "C"}, {3, "C"}
+		};
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		// animator.SetFloat("walk", rigidbody.velocity.x);
+		content.fillAmount = health/100.0f;
+		if (takingDamage) {
+			if (Time.time < damageTime) {
+				spriteRenderer.color = Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time * 3, 1.0f));
+			} else {
+				takingDamage = false;
+			}
+		} else if (spriteRenderer.color != Color.white) {
+			spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, 0.1f);
+		}
+		if (Input.GetKey("o")) {
+			animator.speed = 0.5f;
+			attackSpeed = 0.75f;
+		} else {
+			animator.speed = 1;
+			attackSpeed = 0.5f;
+		}
 	}
 
 	public void Idle() {
@@ -40,14 +68,15 @@ public class wu_PlayerController : MonoBehaviour {
 	}
 	
 	public void Patrol(){
+		if (!grounded) return;
 		animator.SetBool("attack", false);
 		animator.SetBool("jump", false);
 		rigidbody.velocity = new Vector2((faceRight ? 1 : -1), rigidbody.velocity.y);
-		if (Time.time > nextTime) {
+		if (Time.time > nextPatrolFlipTime) {
 			rigidbody.velocity = new Vector2((faceRight? -1 : 1), rigidbody.velocity.y);
 			Flip();
 			animator.SetFloat("walk", Mathf.Abs(rigidbody.velocity.x));
-			nextTime = Time.time + 1;
+			nextPatrolFlipTime = Time.time + 1;
 		}
 	}
 	public void Flip() {
@@ -63,7 +92,7 @@ public class wu_PlayerController : MonoBehaviour {
 
 	public void jumpToNextStage() {
 		if (nextFloor != curFloor) {
-			Debug.Log("jump to next stage");
+			// Debug.Log("jump to next stage");
 			Vector2 start = new Vector2(transform.position.x, transform.position.y);
 			Vector2 target;
 			if (curFloor%2 == 0) {
@@ -75,13 +104,13 @@ public class wu_PlayerController : MonoBehaviour {
 			float gravity = Physics2D.gravity.magnitude;
 			float angle = initAngle * Mathf.Deg2Rad;
 			float x_distance = Mathf.Abs(start.x - target.x);
+			// Debug.Log(x_distance);
 			float y_offset = start.y - target.y;
 			float initVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(x_distance, 2)) / (x_distance * Mathf.Tan(angle) + y_offset));
 			Vector2 finalVelocity = new Vector2(initVelocity * Mathf.Sin(angle) * (start.x > target.x ? -1 : 1), initVelocity * Mathf.Cos(angle));
 			rigidbody.velocity = finalVelocity;
 			animator.SetBool("jump",true);
 		} else {
-			nextFloor++;
 			animator.SetBool("jump", false);
 		}
 		
@@ -94,7 +123,6 @@ public class wu_PlayerController : MonoBehaviour {
 		if (curFloor%2 == 0) {
 			if (!faceRight) {
 				Flip();
-				// faceRight = true;
 			}
 			if (rigidbody.velocity.x <= 0.5f){
 				rigidbody.velocity = new Vector2(speed, rigidbody.velocity.y);
@@ -103,7 +131,6 @@ public class wu_PlayerController : MonoBehaviour {
 		} else {
 			if (faceRight) {
 				Flip();
-				// faceRight = false;
 			}
 			if (rigidbody.velocity.x >= -0.5f) {
 				rigidbody.velocity = new Vector2(-speed, rigidbody.velocity.y);
@@ -159,30 +186,36 @@ public class wu_PlayerController : MonoBehaviour {
 		return findRes;
 	}
 
-	public void takeDamage(){
-		health -= 10;
+	public void takeDamage() {
+		damageTime = Time.time + 1;
+		takingDamage = true;
+		health -= 5;
 	}
 
 	public void Attack() {
 		animator.SetBool("attack", true);
-		// rigidbody.velocity = new Vector2(0,0);
 	}
 
 	public bool CurEnemyAlive() {
-		// animator.SetBool("attack", false);
-		// Debug.Log(enemyAlive);
 		return enemyAlive;
 	}
 	
 	public bool barEnd() {
 		if (tickCount%8 == 0 && tickCount != 0) {
-			Debug.Log("barEnd");
 			return true;
 		} else {
 			return false;
 		}
 	}
-	public bool ifGrounded(){
+	public bool ifNextFloor(){
+		if (nextFloor == curFloor && grounded) {
+			nextFloor = curFloor+1;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public bool ifGrounded() {
 		return grounded;
 	}
 
@@ -194,7 +227,16 @@ public class wu_PlayerController : MonoBehaviour {
 	}
 	public void incrementTick(){
 		tickCount++;
-		// Debug.Log("tick!!");
+	}
+
+	public bool checkCorretness() {
+		int curChordPos = curFloor%4;
+		string curChord = chordList[curChordPos];
+		return analyser.checkChordCorrect(curChord);
+	}
+
+	public float getAttackSpeed() {
+		return this.attackSpeed;
 	}
 	void OnCollisionEnter2D(Collision2D other)
 	{
@@ -202,7 +244,12 @@ public class wu_PlayerController : MonoBehaviour {
 			grounded = true;
 			int.TryParse(other.gameObject.name.Split('_')[1], out curFloor);
 			if (curFloor != 0) Flip();
-			if (curFloor != 0 && curFloor%2==0) cameraController.turnOnScroll();
+			if (curFloor != 0 && curFloor%2==0) {
+				if (curFloor != preFloor) {
+					cameraController.turnOnScroll();
+					preFloor = curFloor;
+				}
+			}
 		}
 	}
 	

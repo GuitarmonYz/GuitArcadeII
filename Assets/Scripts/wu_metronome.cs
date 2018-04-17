@@ -44,7 +44,6 @@ public class wu_metronome : MonoBehaviour {
 	void Awake()
 	{
 		AudioSource[] soundSourceArray = GetComponents<AudioSource>();
-		Debug.Log(soundSourceArray.Length);
 		metronomeAudioSource = soundSourceArray[1];
 		songAudioSource = soundSourceArray[0];
 		songTickTimes = new List<double>();
@@ -204,7 +203,11 @@ public class wu_metronome : MonoBehaviour {
 			}
 			// Call OnTick functions
 			// StartCoroutine (manager.OnTick(CurrentTick, songTickTimes, barOffset, Step, roundLength, 0));
-			manager.incrementPlayerTick();
+			if (CurrentTick > 4) {
+				// Debug.Log("start increment");
+				manager.incrementPlayerTick();
+			}
+				
 		}
 
 		yield return null;

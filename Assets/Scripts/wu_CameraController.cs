@@ -20,7 +20,7 @@ public class wu_CameraController : MonoBehaviour {
 	}
 	void DownMoveScreen () {
 		if (transform.position.y > startPosY) {
-			float PosY = Mathf.SmoothDamp (transform.position.y, transform.position.y-0.02f, ref velocity.y, smoothTimev);
+			float PosY = Mathf.SmoothDamp (transform.position.y, transform.position.y-0.05f, ref velocity.y, smoothTimev);
 			transform.position = new Vector3 (transform.position.x, PosY, transform.position.z);
 		} else {
 			startPosY = transform.position.y - 6.8f;

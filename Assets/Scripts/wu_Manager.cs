@@ -4,29 +4,47 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class wu_Manager : MonoBehaviour {
-	wu_PlayerController playerController;
+	
 	public GameObject wu_player;
-	bool behaviourRight = true;
-	string[] chordList = {"Dm7", "G7", "Cmaj7", "Cmaj7"};
-	Vector3 initFloorPos = new Vector3(2.5f, 2.5f, 0);
-	float floorHight = 2.4f + 1;
+	public GameObject enemy;
 	public GameObject floor;
 	public GameObject chordLabel;
+	private wu_PlayerController playerController;
+	private AudioSource songAudioSource;
 	private StateController stateController;
 	private wu_metronome metronome;
-	// Use this for initialization
+	private string[] chordList = {"Dm7", "G7", "Cmaj7", "Cmaj7"};
+	private Vector3 initFloorPos = new Vector3(2.5f, 2.5f, 0);
+	private float floorHight = 2.4f + 1;
+	private Queue enemyQueue = new Queue();
+	private bool barEnded = false;
+	private int curBar = 0;
 	void Start () {
 		playerController = wu_player.GetComponent<wu_PlayerController>();
 		stateController = wu_player.GetComponent<StateController>();
 		metronome = GetComponent<wu_metronome>();
-		metronome.Play();
+		songAudioSource = GetComponents<AudioSource>()[0];
 		initMap(chordList);
 		stateController.SetupAI(playerController);
 	}
-	
-	// Update is called once per frame
 	void Update () {
-		
+		if(Input.GetKey("p")) {
+			songAudioSource.Play();
+			metronome.Play();
+		}
+		if (playerController.barEnd()) {
+			if (barEnded == false) {
+				barEnded = true;
+				if (curBar != 0) {
+					GameObject popedEnemy = (GameObject)enemyQueue.Dequeue();
+					wu_EnemyController ec = popedEnemy.GetComponent<wu_EnemyController>();
+					ec.selfDestroy();
+				}
+				curBar++;
+			}
+		} else {
+			barEnded = false;
+		}
 	}
 	void initMap(string[] chordList){
 		Vector3 curFloorPos = initFloorPos;
@@ -38,6 +56,10 @@ public class wu_Manager : MonoBehaviour {
 				GameObject newChordLabel = Instantiate(chordLabel, new Vector3(curFloorPos.x + 7 * (i%2 == 0 ? 1 : -1), curFloorPos.y+1), Quaternion.identity);
 				newChordLabel.gameObject.name = "ChordLabel_" + (chordList.Length * j + i);
 				newChordLabel.GetComponentInChildren<Text>().text = chordList[i];
+				if (!(i==0 && j==0)) {
+					GameObject newEnemy = Instantiate(enemy, new Vector3(curFloorPos.x + (i%2 == 0 ? 1 : -1), curFloorPos.y+1), Quaternion.identity);
+					enemyQueue.Enqueue(newEnemy);
+				}
 				curFloorPos.y -= floorHight;
 			}
 		}

@@ -8,6 +8,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: PlayingRight
-  m_EditorClassIdentifier: Assembly-CSharp::PlayingRightDecition
+  m_Script: {fileID: 11500000, guid: c30ff85861b2243fa9dcf26add4d882c, type: 3}
+  m_Name: BehaveRight
+  m_EditorClassIdentifier: 

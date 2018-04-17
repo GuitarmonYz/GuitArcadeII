@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GlobalControl : MonoBehaviour {
 	public static GlobalControl Instance;
-	// Use this for initialization
 	public bool[] seen = new bool[]{false, false};
 	public bool[] completed = new bool[]{false, false};
 

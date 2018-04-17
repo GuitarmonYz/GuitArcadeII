@@ -4,78 +4,96 @@ using UnityEngine;
 
 public class wu_EnemyController : MonoBehaviour {
 	public int health = 100;
-	GameObject player;
-	wu_PlayerController playerController;
-	Rigidbody2D rg2d;
-	Vector2 force;
-	Animator animator;
-	float time;
+	public float reduceRate = 0.5f;
+	public GameObject bullet;
+	private GameObject player;
+	private wu_PlayerController playerController;
+	private Rigidbody2D rg2d;
+	private Vector2 force;
+	private Animator animator;
+	private float time;
+	private float hitTime = 0;
 	private bool faceRight = true;
 	private bool can_attack = true;
 	private bool attacking = false;
 	private float fireRate = 1;
 	private float nextFire = 0;
-	public GameObject bullet;
-	// Use this for initialization
+	private Vector3 curPlayerPos;
+	private Collider2D _collider2D;
+	private bool destroyed = false;
+	private float explodeTime = 0;
+	
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
 		playerController = player.GetComponent<wu_PlayerController>();
 		rg2d = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+		_collider2D = GetComponent<Collider2D>();
 		time = Time.time;
 		rg2d.velocity = new Vector2(3,0);
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		if (!attacking) Patrol();
-		RaycastHit2D hit2D;
-		hit2D = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y), transform.right * (faceRight ? 1 : -1), 10);
-		Debug.DrawRay(new Vector3(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y, transform.position.z), transform.right * (faceRight ? 1 : -1), Color.blue);
-		if (hit2D != false) {
-			// Debug.Log(hit2D.collider.tag);
-			if (hit2D.collider.tag == "Player") {
-				attacking = true;
-				animator.SetBool("Attack", false);
-				if (Time.time > nextFire) {
-					Attack();
-					nextFire = Time.time + fireRate;
+		if (!destroyed) {
+			if (!attacking) Patrol();
+			RaycastHit2D hit2D;
+			hit2D = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y), transform.right * (faceRight ? 1 : -1), 10);
+			Debug.DrawRay(new Vector3(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y, transform.position.z), transform.right * (faceRight ? 1 : -1), Color.blue);
+			if (hit2D != false) {
+				if (hit2D.collider.tag == "Player") {
+					attacking = true;
+					animator.SetBool("Attack", false);
+					curPlayerPos = hit2D.collider.gameObject.transform.position;
+					if (Time.time > nextFire) {
+						Attack();
+						nextFire = Time.time + fireRate;
+					}
 				}
 			}
+		} else if (Time.time > explodeTime + 1) {
+			Destroy(this.gameObject);
 		}
 	}
 	public void Patrol() {
 		animator.SetBool("Attack", false);
 		if (Time.time > time + 1) {
 			Vector2 preVelocity = rg2d.velocity;
-			// Debug.Log(preVelocity);
 			preVelocity.x *= -1;
-			// Debug.Log(preVelocity);
 			rg2d.velocity = preVelocity;
-			// force.x *= -1;
 			time = Time.time;
 			Flip();
-			// Debug.Log(transform.right);
 		}
 	}
 
 	public void Attack() {
 		animator.SetBool("Attack", true);
-		Debug.Log("in attack");
+		rg2d.velocity = new Vector2(rg2d.velocity.x * 0.1f, rg2d.velocity.y);
 		GameObject newBullet = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
 		NinjaBulletController nbc = newBullet.GetComponent<NinjaBulletController>();
-		nbc.setVelocity(rg2d.velocity.x*2);
-		
+		if (transform.position.x > curPlayerPos.x) {
+			nbc.setVelocity(-2);
+		} else {
+			nbc.setVelocity(2);
+		}
+	}
+
+	public void selfDestroy() {
+		animator.SetBool("Explode", true);
+		_collider2D.enabled = false;
+		rg2d.bodyType = RigidbodyType2D.Kinematic;
+		destroyed = true;
+		explodeTime = Time.time;
 	}
 
 	void OnCollisionStay2D(Collision2D other)
 	{
-		// Debug.Log("enter");
 		if (other.gameObject.CompareTag ("Player")) {
-			// wu_PlayerController playerController = other.gameObject.GetComponent<wu_PlayerController>();
 			if (playerController.getAttackState()){
-				health -= 10;
-				Debug.Log("take damage");
+				if (Time.time > hitTime) {
+					health -= 30;
+					Debug.Log("reduce health");
+					hitTime = Time.time + playerController.getAttackSpeed();
+				}
 				rg2d.velocity = new Vector2(0,0);
 				animator.SetBool("Hitted", true);
 			} 
@@ -85,9 +103,6 @@ public class wu_EnemyController : MonoBehaviour {
 				animator.SetBool("Hitted", false);
 				this.gameObject.SetActive(false);
 			}
-		}
-		if (other.gameObject.CompareTag("floor")) {
-			// Debug.Log(other.gameObject.name);
 		}
 	}
 	public void Flip() {

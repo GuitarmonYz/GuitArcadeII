@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: Idle
   m_EditorClassIdentifier: 
   actions:
-  - {fileID: 11400000, guid: f69da79c6c85140519984903687ed109, type: 2}
+  - {fileID: 11400000, guid: cd2193ce30bd24ecf8ed451b74db3f27, type: 2}
   transitions:
-  - decision: {fileID: 11400000, guid: f0282bac5234c4fce836628ad26aa032, type: 2}
+  - decision: {fileID: 11400000, guid: 51e13e60d8fd2498c962d3fd60f4ed7b, type: 2}
     trueState: {fileID: 11400000, guid: fa2e08870c19d4ca792338f8e856da47, type: 2}
     falseState: {fileID: 11400000, guid: 02c78954d4f2843e9a381e07438d715f, type: 2}
