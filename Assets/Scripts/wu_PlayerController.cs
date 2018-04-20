@@ -28,6 +28,7 @@ public class wu_PlayerController : MonoBehaviour {
 	private bool takingDamage = false;
 	private float damageTime = 0;
 	private float attackSpeed = 0.5f;
+	private bool curBarSetted = false;
 	void Start () {
 		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody2D>();
@@ -60,6 +61,12 @@ public class wu_PlayerController : MonoBehaviour {
 		} else {
 			animator.speed = 1;
 			attackSpeed = 0.5f;
+		}
+		if (barBegin()) {
+			if (!curBarSetted) {
+				analyser.setBarBegin(Time.time);
+				curBarSetted = true;
+			}
 		}
 	}
 
@@ -200,6 +207,15 @@ public class wu_PlayerController : MonoBehaviour {
 		return enemyAlive;
 	}
 	
+	public bool barBegin() {
+		if (tickCount % 8 == 1) {
+			return true;
+		} else {
+			curBarSetted = false;
+			return false;
+		}
+	}
+
 	public bool barEnd() {
 		if (tickCount%8 == 0 && tickCount != 0) {
 			return true;

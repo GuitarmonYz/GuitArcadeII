@@ -5,14 +5,22 @@ using MidiJack;
 using FastEMD;
 public class wu_MusicAnalysis : MonoBehaviour {
 	private Queue buffer;
+	private List<List<float[,]>> history;
+	private List<float[,]> curBarBuffer;
 	private Dictionary<string, int> midiNumDict;
 	private HashSet<int> MajorChord;
 	private HashSet<int> MinChord;
 	private float dequeueCycle = 1;
 	private float nextDequeueTime;
+	private float curBarTime = 0;
+	private int curBar = 0;
 	// Use this for initialization
 	void Start () {
 		buffer = new Queue();
+		curBarBuffer = new List<float[,]>();
+		history = new List<List<float[,]>>();
+		for (int i = 0; i < 6; i++)
+			history.Add(new List<float[,]>());
 		midiNumDict = new Dictionary<string, int>(){
 			{"C", 0}, {"C#", 1}, {"D", 2}, {"D#",3},
 			{"E", 4}, {"F", 5}, {"F#", 6}, {"G", 7},
@@ -36,10 +44,6 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			new Feature(22.166f, 175.138f), new Feature(25.333f, 180.138f),
 			new Feature(26.916f, 175.138f), new Feature(28.583f, 169.138f)
 		};
-		// Feature[] features_1 = new Feature[]{
-		// 	new Feature(0, 180.38f), new Feature(1.583f, 175.38f),
-		// 	new Feature(3.166f, 169.138f), new Feature(6.333f, 192.138f),
-		// };
 		sg1.setFeatures(features_1);
 		float[] weights_1 = new float[]{
 			0.5f, 0.5f, 1, 0.5f, 0.5f, 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1, 0.5f, 0.5f, 1
@@ -63,8 +67,6 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		sg2.setWeights(weights_2);
 		Debug.Log(EMDProcessor.distance(sg1, sg2, 0));
 	}
-	
-	// Update is called once per frame
 	void Update () {
 		if (Time.time > nextDequeueTime && buffer.Count != 0) {
 			buffer.Dequeue();
@@ -73,10 +75,10 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		for(int i = 0; i < 128; i++) {
 			if (MidiMaster.GetKey(i) != 0) {
 				enqueueBuffer(i);
+				curBarBuffer.Add(new float[, ]{{Time.time - curBarTime, i}});
 			}
 		}
 	}
-
 	void enqueueBuffer(int newVal) {
 		if (buffer.Count < 4) {
 			buffer.Enqueue(newVal);
@@ -85,7 +87,6 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			buffer.Enqueue(newVal);
 		}
 	}
-
 	public bool checkChordCorrect(string chord){
 		if (buffer.Count == 0) return false;
 		int chordMidiNum = (chord.Length == 1) ? midiNumDict[chord] : midiNumDict[chord.Substring(0,1)];
@@ -100,5 +101,65 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			}
 		}
 		return res;
+	}
+	public void setBarBegin(float time) {
+		curBarTime = time;
+		curBar++;
+		if (curBar%2 == 0) {
+			int tmp = curBar%4;
+			if (tmp < 3) {
+				history[tmp-1] = new List<float[,]>(curBarBuffer);
+			} else {
+				history[2] = new List<float[,]>(curBarBuffer);
+			}
+		} else {
+			int tmp = curBar%4;
+			if (tmp < 3) {
+				history[tmp-1 + 3] = new List<float[,]>(curBarBuffer);
+			} else {
+				history[5] = new List<float[,]>(curBarBuffer);
+			}
+		}
+		curBarBuffer.Clear();
+	}
+	private float[] getWeight(List<float[,]> buffer, float barEndTime){
+		float[] weights = new float[buffer.Count];
+		for (int i = 0; i < buffer.Count-1; i++) {
+			weights[i] = buffer[i+1][0,0] - buffer[i][0,0];
+		}
+		weights[weights.Length-1] = barEndTime - buffer[buffer.Count-1][0,0];
+		return weights;
+	}
+
+	IEnumerator CalculateEMD(List<List<float[,]>> history, float barEndTime){
+		Signiture sg_1 = new Signiture();
+		Signiture sg_2 = new Signiture();
+		List<float[,]> bf_1;
+		List<float[,]> bf_2;
+		int tmp = curBar % 4;
+		if (tmp < 3) {
+			bf_1 = history[tmp-1];
+			bf_2 = history[tmp+2];
+		} else {
+			bf_1 = history[2];
+			bf_2 = history[5];
+		}
+		Feature[] features_1 = new Feature[bf_1.Count];
+		Feature[] features_2 = new Feature[bf_2.Count];
+		for (int i = 0; i < bf_1.Count; i++) {
+			features_1[i] = new Feature(bf_1[i][0,0], bf_1[i][0,1]); 
+		}
+		for (int i = 0; i < bf_2.Count; i++) {
+			features_2[i] = new Feature(bf_2[i][0,0], bf_2[i][0,1]);
+		}
+		float[] weights_1 = getWeight(bf_1, barEndTime);
+		float[] weights_2 = getWeight(bf_2, barEndTime);
+		sg_1.setFeatures(features_1);
+		sg_1.setWeights(weights_1);
+		sg_2.setFeatures(features_2);
+		sg_2.setWeights(weights_2);
+		double dist = EMDProcessor.distance(sg_1, sg_2, 0);
+		Debug.Log(dist);
+		yield return null;
 	}
 }
