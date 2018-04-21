@@ -79,6 +79,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_MoveDir.y = 0f;
             }
+            if (Input.GetKeyDown("c")){
+                if (transform.localScale.y > 1f) {
+                    transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+                } else {
+                    transform.localScale = new Vector3(transform.localScale.x, 1.5f, transform.localScale.z);
+                }
+            }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
         }

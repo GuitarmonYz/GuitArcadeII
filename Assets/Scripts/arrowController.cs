@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MidiJack;
+using UnityEngine.SceneManagement;
 public class arrowController : MonoBehaviour {
 	public GameObject center;
 	public GameObject meshDrawer;
@@ -11,8 +12,7 @@ public class arrowController : MonoBehaviour {
 	private string[] circleOfFifths = {"C", "G", "D", "A", "E", "B", "F#", "Db", "Ab", "Eb", "Bb", "F"};
 	private Vector2[] circlePos = new Vector2[12];
 	private Text[] noteNames = new Text[12];
-	private string[] midiNames = {"C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"};
-	// private string preNote = "C";
+	private string[] midiNames = {"C","Db","D","Eb","E","F","F#","G","Ab","A","Bb","B"};
 	private int questionNote;
 	private int targetNote;
 	private float angle = 0;
@@ -26,7 +26,8 @@ public class arrowController : MonoBehaviour {
 	private bool meshGenerated = false;
 	private Queue inputBuffer = new Queue();
 	private Dictionary<int, bool> chordDic = new Dictionary<int, bool>();
-	// Use this for initialization
+	private int successulRounds = 3;
+	private int curSuccessulRounds = 0;
 	void Awake()
 	{
 		Object[] chords_clips_raw = Resources.LoadAll("AudioFiles/circle_of_fifth_chords", typeof(AudioClip));
@@ -39,7 +40,8 @@ public class arrowController : MonoBehaviour {
 
 	void Start () {
 		//targetNote = Random.Range(0, circleOfFifths.Length-1);
-		targetNote = circleOfFifths.Length-1;
+		// targetNote = circleOfFifths.Length-1;
+		targetNote = 7;
 		questionNote = (targetNote + 1) % 12;
 		for (int i = 0; i < 12; i++) {
 			float angle = findAngle(circleOfFifths[i]);
@@ -51,8 +53,12 @@ public class arrowController : MonoBehaviour {
 		meshTest = meshDrawer.GetComponent<MeshTest>();
 	}
 	
-	// Update is called once per frame
 	void Update () {
+
+		if (Input.GetKey("k")) {
+			GlobalControl.Instance.completed[(int)GlobalControl.Stages.kCirFifth] = true;
+			SceneManager.LoadScene(0);
+		}
 
 		for (int i = 0; i < 128; i++) {
 			if (MidiMaster.GetKeyDown(i)) {
@@ -73,14 +79,12 @@ public class arrowController : MonoBehaviour {
 		}
 
 		if (isQuestionNote) {
-			if (angle <= questionNote * 30 + 2 && angle >= questionNote * 30 - 2) {
+			if (roundAngle(angle) <= (questionNote * 30)%360 + 2 && roundAngle(angle) >= (questionNote * 30)%360 - 2) {
 				if (!audioSource.isPlaying) {
 					audioSource.clip = findClipIdx(questionNote, true);
 					audioSource.Play();
 				}
 				
-				// Debug.Log("found question note " + circleOfFifths[questionNote]);
-				// Debug.Log("play question note " + circleOfFifths[questionNote] + "7");
 				toggleNoteNameUI(questionNote, dominantChord, true);
 				if (!meshGenerated){
 					generateMesh(dominantChord, questionNote);
@@ -101,9 +105,7 @@ public class arrowController : MonoBehaviour {
 				toggleNoteNameUI(questionNote, dominantChord, false);
 			}
 		} else {
-			if (angle <= targetNote * 30 + 2 && angle >= targetNote * 30 - 2) {
-				Debug.Log("found target note " + circleOfFifths[targetNote]);
-				Debug.Log("play question note " + circleOfFifths[targetNote] + "maj7");
+			if ( roundAngle(angle) <= (targetNote * 30)%360 + 2 && roundAngle(angle) >= (targetNote * 30)%360 - 2) {
 				if (!audioSource.isPlaying) {
 					audioSource.clip = findClipIdx(targetNote, false);
 					audioSource.Play();
@@ -120,16 +122,21 @@ public class arrowController : MonoBehaviour {
 					toggleNoteNameUI(targetNote, maj7Chord, false);
 					targetNote = Random.Range(0, circleOfFifths.Length-1);
 					questionNote = (targetNote + 1) % 12;
+					Debug.Log(circleOfFifths[questionNote]);
 					Debug.Log(questionNote);
 					inputBuffer.Clear();
 					audioSource.Stop();
+					curSuccessulRounds++;
+					if (curSuccessulRounds >= successulRounds) {
+						GlobalControl.Instance.completed[(int)GlobalControl.Stages.kCirFifth] = true;
+						SceneManager.LoadScene(0);
+					}
 				}
 			} else {
 				if (audioSource.isPlaying) audioSource.Stop();
 				meshTest.clearMesh();
 				meshGenerated = false;
 				toggleNoteNameUI(targetNote, maj7Chord, false);
-				
 			}
 		}
 	}
@@ -167,6 +174,13 @@ public class arrowController : MonoBehaviour {
 		myText.rectTransform.localScale = new Vector3(1,1,1);
 		return myText;
 	}
+	private float roundAngle(float angle) {
+		float res = angle;
+		while(res < 0) {
+			res += 360;
+		}
+		return res;
+	}
 
 	private void toggleNoteNameUI(int note, int[] chord, bool enabled){
 		for (int i = 0; i < chord.Length; i++) {
@@ -188,16 +202,17 @@ public class arrowController : MonoBehaviour {
 			for (int i = 0; i < dominantChord.Length; i++) {
 				chordDic.Add(midiName2noteNum(circleOfFifths[(questionNote + dominantChord[i])%12]), false);
 			}
+			
 		} else {
 			for (int i = 0; i < maj7Chord.Length; i++) {
 				chordDic.Add(midiName2noteNum(circleOfFifths[(targetNote + maj7Chord[i])%12]), false);
 			}
 		}
+		
 		foreach(int note in inputBuffer) {
 			if (chordDic.ContainsKey(note%12)) {
 				chordDic[note%12] = true;
 			}
-			
 		}
 		foreach (bool val in chordDic.Values) {
 			if (!val) return false;
