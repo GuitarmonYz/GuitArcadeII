@@ -64,6 +64,7 @@ public class wu_PlayerController : MonoBehaviour {
 		}
 		if (barBegin()) {
 			if (!curBarSetted) {
+				Debug.Log("bar begin");
 				analyser.setBarBegin(Time.time);
 				curBarSetted = true;
 			}

@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu (menuName = "PluggableAI/Decisions/BehaveRight")]
 public class BehaveRightDecision : FSM_Decision {
 	public override bool Decide(StateController controller) {
-		// return controller.playerController.checkCorretness();
-		return Input.GetKey("f");
+		return controller.playerController.checkCorretness();
+		// return Input.GetKey("f");
 	}
 }

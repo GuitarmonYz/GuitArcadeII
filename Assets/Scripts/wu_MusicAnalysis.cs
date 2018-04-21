@@ -19,8 +19,10 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		buffer = new Queue();
 		curBarBuffer = new List<float[,]>();
 		history = new List<List<float[,]>>();
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 8; i++) {
 			history.Add(new List<float[,]>());
+		}
+			
 		midiNumDict = new Dictionary<string, int>(){
 			{"C", 0}, {"C#", 1}, {"D", 2}, {"D#",3},
 			{"E", 4}, {"F", 5}, {"F#", 6}, {"G", 7},
@@ -33,47 +35,48 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			0, 3, 7, 10
 		};
 		nextDequeueTime = Time.time + dequeueCycle;
-		Signiture sg1 = new Signiture();
-		Feature[] features_1 = new Feature[]{
-			new Feature(0, 180.38f), new Feature(1.583f, 175.38f),
-			new Feature(3.166f, 169.138f), new Feature(6.333f, 192.138f),
-			new Feature(7.916f, 197.138f), new Feature(9.5f, 192.138f),
-			new Feature(12.667f, 186.138f), new Feature(14.25f, 192.138f),
-			new Feature(15.833f, 197.138f), new Feature(17.41f, 192.138f),
-			new Feature(19, 186.138f), new Feature(20.58f, 180.138f),
-			new Feature(22.166f, 175.138f), new Feature(25.333f, 180.138f),
-			new Feature(26.916f, 175.138f), new Feature(28.583f, 169.138f)
-		};
-		sg1.setFeatures(features_1);
-		float[] weights_1 = new float[]{
-			0.5f, 0.5f, 1, 0.5f, 0.5f, 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1, 0.5f, 0.5f, 1
-		};
-		sg1.setWeights(weights_1);
-		Signiture sg2 = new Signiture();
-		Feature[] features_2 = new Feature[]{
-			new Feature(0, 180), new Feature(2.25f, 175),
-			new Feature(3, 169), new Feature(6, 192),
-			new Feature(7.5f, 197), new Feature(9, 192),
-			new Feature(12, 186), new Feature(13.5f, 192),
-			new Feature(15, 197), new Feature(16.5f, 192),
-			new Feature(18, 186), new Feature(19.5f, 180),
-			new Feature(22.5f, 175), new Feature(25.5f, 180),
-			new Feature(27.75f, 175), new Feature(28.5f, 169)
-		};
-		sg2.setFeatures(features_2);
-		float[] weights_2 = new float[]{
-			0.75f, 0.25f, 1, 0.5f, 0.5f, 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1, 1, 0.75f, 0.25f, 1
-		};
-		sg2.setWeights(weights_2);
-		Debug.Log(EMDProcessor.distance(sg1, sg2, 0));
+		// Signiture sg1 = new Signiture();
+		// Feature[] features_1 = new Feature[]{
+		// 	new Feature(0, 180.38f), new Feature(1.583f, 175.38f),
+		// 	new Feature(3.166f, 169.138f), new Feature(6.333f, 192.138f),
+		// 	new Feature(7.916f, 197.138f), new Feature(9.5f, 192.138f),
+		// 	new Feature(12.667f, 186.138f), new Feature(14.25f, 192.138f),
+		// 	new Feature(15.833f, 197.138f), new Feature(17.41f, 192.138f),
+		// 	new Feature(19, 186.138f), new Feature(20.58f, 180.138f),
+		// 	new Feature(22.166f, 175.138f), new Feature(25.333f, 180.138f),
+		// 	new Feature(26.916f, 175.138f), new Feature(28.583f, 169.138f)
+		// };
+		// sg1.setFeatures(features_1);
+		// float[] weights_1 = new float[]{
+		// 	0.5f, 0.5f, 1, 0.5f, 0.5f, 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1, 0.5f, 0.5f, 1
+		// };
+		// sg1.setWeights(weights_1);
+		// Signiture sg2 = new Signiture();
+		// Feature[] features_2 = new Feature[]{
+		// 	new Feature(0, 180), new Feature(2.25f, 175),
+		// 	new Feature(3, 169), new Feature(6, 192),
+		// 	new Feature(7.5f, 197), new Feature(9, 192),
+		// 	new Feature(12, 186), new Feature(13.5f, 192),
+		// 	new Feature(15, 197), new Feature(16.5f, 192),
+		// 	new Feature(18, 186), new Feature(19.5f, 180),
+		// 	new Feature(22.5f, 175), new Feature(25.5f, 180),
+		// 	new Feature(27.75f, 175), new Feature(28.5f, 169)
+		// };
+		// sg2.setFeatures(features_2);
+		// float[] weights_2 = new float[]{
+		// 	0.75f, 0.25f, 1, 0.5f, 0.5f, 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1, 1, 0.75f, 0.25f, 1
+		// };
+		// sg2.setWeights(weights_2);
+		// Debug.Log(EMDProcessor.distance(sg1, sg2, 0));
 	}
 	void Update () {
 		if (Time.time > nextDequeueTime && buffer.Count != 0) {
-			buffer.Dequeue();
+			if (buffer.Count != 0)
+				buffer.Dequeue();
 			nextDequeueTime = Time.time + dequeueCycle;
 		}
 		for(int i = 0; i < 128; i++) {
-			if (MidiMaster.GetKey(i) != 0) {
+			if (MidiMaster.GetKeyDown(i)) {
 				enqueueBuffer(i);
 				curBarBuffer.Add(new float[, ]{{Time.time - curBarTime, i}});
 			}
@@ -103,24 +106,28 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		return res;
 	}
 	public void setBarBegin(float time) {
+		float barEndTime = time - curBarTime;
 		curBarTime = time;
-		curBar++;
-		if (curBar%2 == 0) {
-			int tmp = curBar%4;
-			if (tmp < 3) {
-				history[tmp-1] = new List<float[,]>(curBarBuffer);
-			} else {
-				history[2] = new List<float[,]>(curBarBuffer);
+		if (curBar-1 >= 0) {
+			int preBarIdx = (curBar-1) % 8;
+			history[preBarIdx].Clear();
+			foreach (float[,] pair in curBarBuffer) {
+				history[preBarIdx].Add(pair);
 			}
-		} else {
-			int tmp = curBar%4;
-			if (tmp < 3) {
-				history[tmp-1 + 3] = new List<float[,]>(curBarBuffer);
+			if (preBarIdx < 4) {
+				if (history[preBarIdx + 4].Count != 0) {
+					Debug.Log("start calculating EMD");
+					CalculateEMD(history[preBarIdx], history[preBarIdx + 4], barEndTime);
+				}
 			} else {
-				history[5] = new List<float[,]>(curBarBuffer);
+				if (history[preBarIdx - 4].Count != 0) {
+					Debug.Log("Start calculating EMD");
+					CalculateEMD(history[preBarIdx], history[preBarIdx - 4], barEndTime);
+				}
 			}
 		}
 		curBarBuffer.Clear();
+		curBar++;
 	}
 	private float[] getWeight(List<float[,]> buffer, float barEndTime){
 		float[] weights = new float[buffer.Count];
@@ -131,19 +138,10 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		return weights;
 	}
 
-	IEnumerator CalculateEMD(List<List<float[,]>> history, float barEndTime){
+	private void CalculateEMD(List<float[,]> bf_1, List<float[,]> bf_2, float barEndTime){
 		Signiture sg_1 = new Signiture();
 		Signiture sg_2 = new Signiture();
-		List<float[,]> bf_1;
-		List<float[,]> bf_2;
-		int tmp = curBar % 4;
-		if (tmp < 3) {
-			bf_1 = history[tmp-1];
-			bf_2 = history[tmp+2];
-		} else {
-			bf_1 = history[2];
-			bf_2 = history[5];
-		}
+
 		Feature[] features_1 = new Feature[bf_1.Count];
 		Feature[] features_2 = new Feature[bf_2.Count];
 		for (int i = 0; i < bf_1.Count; i++) {
@@ -154,12 +152,12 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		}
 		float[] weights_1 = getWeight(bf_1, barEndTime);
 		float[] weights_2 = getWeight(bf_2, barEndTime);
+		
 		sg_1.setFeatures(features_1);
 		sg_1.setWeights(weights_1);
 		sg_2.setFeatures(features_2);
 		sg_2.setWeights(weights_2);
 		double dist = EMDProcessor.distance(sg_1, sg_2, 0);
-		Debug.Log(dist);
-		yield return null;
+		Debug.Log("Dist: " + dist);
 	}
 }
