@@ -10,7 +10,7 @@ public class wu_MusicAnalysis : MonoBehaviour {
 	private Dictionary<string, int> midiNumDict;
 	private HashSet<int> MajorChord;
 	private HashSet<int> MinChord;
-	private float dequeueCycle = 1;
+	private float dequeueCycle = 3;
 	private float nextDequeueTime;
 	private float curBarTime = 0;
 	private int curBar = 0;

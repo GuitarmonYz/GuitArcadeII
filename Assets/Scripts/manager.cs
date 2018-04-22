@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using MidiJack;
 public class Manager : MonoBehaviour {
 	Queue<char> key_input = new Queue<char>();
@@ -119,7 +120,10 @@ public class Manager : MonoBehaviour {
 	}
 
 	public string checkProgress(){
-		//Debug.Log(instruction_map[curInstruction]);
+		// if (curInstruction >= 2) {
+		// 	SceneManager.LoadScene(0);
+		// 	return null;
+		// }
 		return instruction_map[curInstruction];
 	}
 

@@ -10,6 +10,9 @@ TagManager:
   - enemy
   - floor
   - ninja_bullet
+  - safe_door
+  - fps_controller
+  - safe_lock
   layers:
   - Default
   - TransparentFX

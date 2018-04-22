@@ -7,26 +7,25 @@ public class displayPopup : MonoBehaviour {
 	public Text text;
 	public float fadeTime = 10;
 	private bool displayInfo = false;
-	
-	// Use this for initialization
 	void Start () {
 		text.color = Color.clear;
 	}
-	
-	// Update is called once per frame
 	void Update () {
 		fadeText();
 	}
 	
 	void OnMouseOver()
 	{
-		// Debug.Log("mouse over");
 		displayInfo = true;
 		if (this.gameObject.name == "Safe") {
 			GlobalControl.Instance.seen[0] = true;
 		}
 		if (this.gameObject.name == "desktop_computer") {
 			GlobalControl.Instance.seen[1] = true;
+		}
+		if (this.gameObject.name == "gameboy") {
+			Debug.Log("Mouse over gameboy");
+			GlobalControl.Instance.seen[2] = true;
 		}
 	}
 	
@@ -37,6 +36,9 @@ public class displayPopup : MonoBehaviour {
 			GlobalControl.Instance.seen[0] = false;
 		}
 		if (this.gameObject.name == "desktop_computer") {
+			GlobalControl.Instance.seen[1] = false;
+		}
+		if (this.gameObject.name == "gameboy") {
 			GlobalControl.Instance.seen[1] = false;
 		}
 	}
