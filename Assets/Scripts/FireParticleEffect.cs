@@ -17,9 +17,7 @@ public class FireParticleEffect : MonoBehaviour {
 	void Update () {
 	
         timeSinceLastSpawn += Time.deltaTime;
-
         float correctTimeBetweenSpawns = 1f/Rate;
-
         while( timeSinceLastSpawn > correctTimeBetweenSpawns )
         {
             // Time to spawn a particle

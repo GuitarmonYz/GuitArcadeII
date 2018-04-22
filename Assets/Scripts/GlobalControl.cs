@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GlobalControl : MonoBehaviour {
 	public static GlobalControl Instance;
 	private GameObject safeDoor;
-	// private GameObject player;
 	public bool[] seen = new bool[]{false, false, false};
 	public bool[] completed = new bool[]{false, false, false};
 	public enum Stages {

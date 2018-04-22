@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class wu_Manager : MonoBehaviour {
-	
 	public GameObject wu_player;
 	public GameObject enemy;
 	public GameObject floor;

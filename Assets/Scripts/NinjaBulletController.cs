@@ -17,25 +17,20 @@ public class NinjaBulletController : MonoBehaviour {
 	{
 		playerController = player.GetComponent<wu_PlayerController>();
 	}
-	
-	// Update is called once per frame
 	void Update () {
 		rg2D.MoveRotation(rg2D.rotation + rotation_speed * Time.fixedDeltaTime);
 		if (Mathf.Abs(player.transform.position.x - transform.position.x) <= 2) {
 			if (playerController.checkCorretness()) {
 				playerController.openShield();
 			}
-			
 		}
 	}
 	public void setVelocity(float x){
-		// rg2D = GetComponent<Rigidbody2D>();
 		if (rg2D == null) {
 			Debug.Log(rg2D);
 		}
 		rg2D.velocity = new Vector2(x, 0);
 	}
-
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.CompareTag("shield")) {
