@@ -9,7 +9,7 @@ public class wu_CameraController : MonoBehaviour {
 	private float startPosY;
 	private bool downSwitch = false;
 	void Start () {
-		startPosY = transform.position.y - 6.8f;
+		startPosY = transform.position.y - 6.8f - 1;
 	}
 	
 	// Update is called once per frame
@@ -23,7 +23,7 @@ public class wu_CameraController : MonoBehaviour {
 			float PosY = Mathf.SmoothDamp (transform.position.y, transform.position.y-0.05f, ref velocity.y, smoothTimev);
 			transform.position = new Vector3 (transform.position.x, PosY, transform.position.z);
 		} else {
-			startPosY = transform.position.y - 6.8f;
+			startPosY = transform.position.y - 6.8f - 1;
 			downSwitch = false;
 		}
 	}

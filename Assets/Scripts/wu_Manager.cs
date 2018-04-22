@@ -15,7 +15,7 @@ public class wu_Manager : MonoBehaviour {
 	private wu_metronome metronome;
 	private string[] chordList = {"Dm7", "G7", "Cmaj7", "Cmaj7"};
 	private Vector3 initFloorPos = new Vector3(2.5f, 2.5f, 0);
-	private float floorHight = 2.4f + 1;
+	private float floorHight = 2.4f + 1.5f;
 	private Queue enemyQueue = new Queue();
 	private bool barEnded = false;
 	private int curBar = 0;

@@ -12,14 +12,15 @@ public class AdditionalController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (GlobalControl.Instance.seen[0]) {
+		if (GlobalControl.Instance.seen[(int)GlobalControl.Stages.kRhythm]) {
 			if (Input.GetKey("f")) {
-				SceneManager.LoadScene(1);
+				SceneManager.LoadScene((int)GlobalControl.Stages.kRhythm+1);
 			}
-		} else if (GlobalControl.Instance.seen[1]) {
+		} else if (GlobalControl.Instance.seen[(int)GlobalControl.Stages.kCirFifth] && GlobalControl.Instance.completed[(int)GlobalControl.Stages.kRhythm]) {
 			if (Input.GetKey("f")) {
-				SceneManager.LoadScene(2);
+				SceneManager.LoadScene((int)GlobalControl.Stages.kCirFifth+1);
 			}
 		}
+		
 	}
 }

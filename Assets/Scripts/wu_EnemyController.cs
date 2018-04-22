@@ -40,11 +40,11 @@ public class wu_EnemyController : MonoBehaviour {
 			hit2D = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y), transform.right * (faceRight ? 1 : -1), 10);
 			Debug.DrawRay(new Vector3(transform.position.x + 0.5f * (faceRight ? 1 : -1), transform.position.y, transform.position.z), transform.right * (faceRight ? 1 : -1), Color.blue);
 			if (hit2D != false) {
-				if (hit2D.collider.tag == "Player") {
+				if (hit2D.collider.tag == "Player" || hit2D.collider.tag == "shield") {
 					attacking = true;
 					animator.SetBool("Attack", false);
 					curPlayerPos = hit2D.collider.gameObject.transform.position;
-					if (Time.time > nextFire) {
+					if (Time.time > nextFire && can_attack) {
 						Attack();
 						nextFire = Time.time + fireRate;
 					}
@@ -68,21 +68,27 @@ public class wu_EnemyController : MonoBehaviour {
 	public void Attack() {
 		animator.SetBool("Attack", true);
 		rg2d.velocity = new Vector2(rg2d.velocity.x * 0.1f, rg2d.velocity.y);
-		GameObject newBullet = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-		NinjaBulletController nbc = newBullet.GetComponent<NinjaBulletController>();
-		if (transform.position.x > curPlayerPos.x) {
-			nbc.setVelocity(-2);
-		} else {
-			nbc.setVelocity(2);
+		if (Mathf.Abs(transform.position.x + 1 * 1 * ((transform.position.x > curPlayerPos.x) ? -1 : 1) - curPlayerPos.x) > 0.75f) {
+			GameObject newBullet = Instantiate(bullet, new Vector3(transform.position.x + 1 * ((transform.position.x > curPlayerPos.x) ? -1 : 1), transform.position.y, transform.position.z), Quaternion.identity);
+			NinjaBulletController nbc = newBullet.GetComponent<NinjaBulletController>();
+			if (transform.position.x > curPlayerPos.x) {
+				nbc.setVelocity(-2);
+			} else {
+				nbc.setVelocity(2);
+			}
 		}
 	}
 
 	public void selfDestroy() {
-		animator.SetBool("Explode", true);
-		_collider2D.enabled = false;
-		rg2d.bodyType = RigidbodyType2D.Kinematic;
-		destroyed = true;
-		explodeTime = Time.time;
+		if (this.gameObject.activeSelf) {
+			animator.SetBool("Explode", true);
+			playerController.takeDamage(5);
+			// Debug.Log("take damage");
+			_collider2D.enabled = false;
+			rg2d.bodyType = RigidbodyType2D.Kinematic;
+			destroyed = true;
+			explodeTime = Time.time;
+		}
 	}
 
 	void OnCollisionStay2D(Collision2D other)
@@ -91,12 +97,13 @@ public class wu_EnemyController : MonoBehaviour {
 			if (playerController.getAttackState()){
 				if (Time.time > hitTime) {
 					health -= 30;
-					Debug.Log("reduce health");
+					// Debug.Log("reduce health");
 					hitTime = Time.time + playerController.getAttackSpeed();
 				}
 				rg2d.velocity = new Vector2(0,0);
 				animator.SetBool("Hitted", true);
-			} 
+				can_attack = false;
+			}
 			if (health <= 0) {
 				playerController.setAttackState(false);
 				playerController.enemyAlive = false;

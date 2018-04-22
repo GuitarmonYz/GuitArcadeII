@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class wu_PlayerController : MonoBehaviour {
 	public Image content; // healthbar
+	public Image creatvity_content; // creativity bar
 	public GameObject _camera; // moving camera
 	public float speed = 1f; // moving speed
+	public GameObject sheild;
 	[HideInInspector] public Vector2 curEnemyPos;
 	[HideInInspector] public bool enemyAlive = false;
 	
@@ -24,15 +26,18 @@ public class wu_PlayerController : MonoBehaviour {
 	private bool grounded = false; // whether grounded
 	private int tickCount = 0; // for tracing bar position
 	private int health = 100; // health value
+	private int creatvity = 100;
 	private Dictionary<int, string> chordList; //chord list map
 	private bool takingDamage = false;
 	private float damageTime = 0;
 	private float attackSpeed = 0.5f;
 	private bool curBarSetted = false;
+	private GameObject cur_sheild;
 	void Start () {
 		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody2D>();
 		rayEye = transform.GetChild(0).gameObject;
+		// rayEye_bullet = transform.GetChild(1).gameObject;
 		cameraController = _camera.GetComponent<wu_CameraController>();
 		analyser = GetComponent<wu_MusicAnalysis>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
@@ -42,10 +47,12 @@ public class wu_PlayerController : MonoBehaviour {
 		chordList = new Dictionary<int, string>(){
 			{0, "Dm"}, {1, "G"}, {2, "C"}, {3, "C"}
 		};
+		Physics2D.queriesHitTriggers = false;
 	}
 	
 	void Update () {
 		content.fillAmount = health/100.0f;
+		creatvity_content.fillAmount = creatvity/100.0f;
 		if (takingDamage) {
 			if (Time.time < damageTime) {
 				spriteRenderer.color = Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time * 3, 1.0f));
@@ -69,6 +76,9 @@ public class wu_PlayerController : MonoBehaviour {
 				curBarSetted = true;
 			}
 		}
+		if (cur_sheild != null) {
+			cur_sheild.transform.position = transform.position;
+		}
 	}
 
 	public void Idle() {
@@ -79,6 +89,7 @@ public class wu_PlayerController : MonoBehaviour {
 		if (!grounded) return;
 		animator.SetBool("attack", false);
 		animator.SetBool("jump", false);
+		closeShield();
 		rigidbody.velocity = new Vector2((faceRight ? 1 : -1), rigidbody.velocity.y);
 		if (Time.time > nextPatrolFlipTime) {
 			rigidbody.velocity = new Vector2((faceRight? -1 : 1), rigidbody.velocity.y);
@@ -194,10 +205,27 @@ public class wu_PlayerController : MonoBehaviour {
 		return findRes;
 	}
 
-	public void takeDamage() {
+	public void openShield(){
+		if (cur_sheild == null) {
+			cur_sheild = Instantiate(sheild, transform.position, transform.rotation);
+		}
+	}
+
+	public void closeShield(){
+		if (cur_sheild != null) {
+			Destroy(cur_sheild);
+		}
+	}
+
+	public void takeDamage(int damageVal) {
 		damageTime = Time.time + 1;
 		takingDamage = true;
-		health -= 5;
+		health -= damageVal;
+	}
+
+	public void takeCreateDamage(){
+		Debug.Log("take create damage");
+		creatvity -= 20;
 	}
 
 	public void Attack() {
@@ -274,6 +302,7 @@ public class wu_PlayerController : MonoBehaviour {
 	{
 		if (other.gameObject.CompareTag("floor")) {
 			grounded = false;
+			closeShield();
 		}
 	}
 }

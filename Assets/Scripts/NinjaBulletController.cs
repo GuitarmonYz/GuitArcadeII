@@ -5,18 +5,28 @@ using UnityEngine;
 public class NinjaBulletController : MonoBehaviour {
 	private float rotation_speed = 60;
 	private Rigidbody2D rg2D;
-	// Use this for initialization
-	/// <summary>
-	/// Awake is called when the script instance is being loaded.
-	/// </summary>
+	private GameObject player;
+	private wu_PlayerController playerController;
 	void Awake()
 	{
 		rg2D = GetComponent<Rigidbody2D>();
+		player = GameObject.FindGameObjectWithTag("Player");
+	}
+
+	void Start()
+	{
+		playerController = player.GetComponent<wu_PlayerController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		rg2D.MoveRotation(rg2D.rotation + rotation_speed * Time.fixedDeltaTime);
+		if (Mathf.Abs(player.transform.position.x - transform.position.x) <= 2) {
+			if (playerController.checkCorretness()) {
+				playerController.openShield();
+			}
+			
+		}
 	}
 	public void setVelocity(float x){
 		// rg2D = GetComponent<Rigidbody2D>();
@@ -25,11 +35,14 @@ public class NinjaBulletController : MonoBehaviour {
 		}
 		rg2D.velocity = new Vector2(x, 0);
 	}
-	
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		if (other.gameObject.CompareTag("shield")) {
+			Destroy(this.gameObject);
+		}
 		if(other.gameObject.CompareTag("Player")){
-			other.gameObject.GetComponent<wu_PlayerController>().takeDamage();
+			other.gameObject.GetComponent<wu_PlayerController>().takeDamage(5);
 			Destroy(this.gameObject);
 		}
 		
