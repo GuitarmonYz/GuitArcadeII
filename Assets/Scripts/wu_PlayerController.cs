@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class wu_PlayerController : MonoBehaviour {
 	public Image content; // healthbar
 	public Image creatvity_content; // creativity bar
+	public Text degreeText; // hint degree
 	public GameObject _camera; // moving camera
 	public float speed = 1f; // moving speed
 	public GameObject sheild;
@@ -84,6 +85,7 @@ public class wu_PlayerController : MonoBehaviour {
 				cur_rock = Instantiate(rock, new Vector3(-6f, yPos, 0), Quaternion.identity);
 				wu_rockController rc = cur_rock.GetComponent<wu_rockController>();
 				// rc.setVelocity();
+				degreeText.color = new Color(degreeText.color.r, degreeText.color.g, degreeText.color.b, 255);
 				rc.setInitFloor(curBar-2);
 			}
 		}

@@ -277,7 +277,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 518, y: -11}
+  m_AnchoredPosition: {x: 626, y: -11}
   m_SizeDelta: {x: 200.5, y: 72.6}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &50926169
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.8897059, b: 0.8897059, a: 1}
+  m_Color: {r: 1, g: 0.8897059, b: 0.8897059, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -621,7 +621,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 170, y: -18}
+  m_AnchoredPosition: {x: 511, y: -18}
   m_SizeDelta: {x: 1144, y: 139}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &644710783
@@ -861,7 +861,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 560, y: -18}
+  m_AnchoredPosition: {x: 928, y: -18}
   m_SizeDelta: {x: 1144, y: 139}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &856855930
@@ -1165,7 +1165,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a994cf0569a224716991900549fe9aee, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.38
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1793,6 +1793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 911415118}
   creatvity_content: {fileID: 816412817}
+  degreeText: {fileID: 50926169}
   _camera: {fileID: 415819012}
   speed: 1.5
   sheild: {fileID: 1611312733565350, guid: 715ed662d78694de49beccf1bd796050, type: 2}
