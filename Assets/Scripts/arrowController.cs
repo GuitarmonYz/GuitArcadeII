@@ -8,6 +8,7 @@ public class arrowController : MonoBehaviour {
 	public GameObject center;
 	public GameObject meshDrawer;
 	public GameObject canvasObject;
+	public Text text;
 	private MeshTest meshTest;
 	private string[] circleOfFifths = {"C", "G", "D", "A", "E", "B", "F#", "Db", "Ab", "Eb", "Bb", "F"};
 	private Vector2[] circlePos = new Vector2[12];
@@ -39,7 +40,7 @@ public class arrowController : MonoBehaviour {
 	}
 
 	void Start () {
-		targetNote = 7;
+		targetNote = 11;
 		questionNote = (targetNote + 1) % 12;
 		for (int i = 0; i < 12; i++) {
 			float angle = findAngle(circleOfFifths[i]);
@@ -53,6 +54,9 @@ public class arrowController : MonoBehaviour {
 	
 	void Update () {
 
+		if (Input.GetKey("f")) {
+			text.color = new Color(255,0,0,255);
+		}
 		if (Input.GetKey("k")) {
 			GlobalControl.Instance.completed[(int)GlobalControl.Stages.kCirFifth] = true;
 			SceneManager.LoadScene(0);
