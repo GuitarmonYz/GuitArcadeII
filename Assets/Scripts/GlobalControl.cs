@@ -30,7 +30,9 @@ public class GlobalControl : MonoBehaviour {
        	Debug.Log(completed[(int)Stages.kCirFifth]);
 		safeDoor = GameObject.FindGameObjectWithTag("safe_door");
 		if (completed[(int)Stages.kCirFifth]) {
-			safeDoor.GetComponent<Animator>().SetBool("Door", true);
+			if (safeDoor != null) {
+				safeDoor.GetComponent<Animator>().SetBool("Door", true);
+			}
 		}
     }
 	void Update() {

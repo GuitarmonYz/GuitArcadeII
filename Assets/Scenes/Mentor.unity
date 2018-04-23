@@ -795,6 +795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1341056185}
+  panelObject: {fileID: 1697679294}
   flag: {fileID: 1780438030}
   player: {fileID: 1064986920}
   boss: {fileID: 1616173990}
@@ -6014,8 +6015,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 258.8, y: 49.1}
+  m_AnchoredPosition: {x: 2.7314, y: 1.5}
+  m_SizeDelta: {x: 253.23, y: 52.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1341056185
 MonoBehaviour:
@@ -6047,7 +6048,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Good to Go!!!
 --- !u!222 &1341056186

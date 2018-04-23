@@ -39,8 +39,6 @@ public class arrowController : MonoBehaviour {
 	}
 
 	void Start () {
-		//targetNote = Random.Range(0, circleOfFifths.Length-1);
-		// targetNote = circleOfFifths.Length-1;
 		targetNote = 7;
 		questionNote = (targetNote + 1) % 12;
 		for (int i = 0; i < 12; i++) {

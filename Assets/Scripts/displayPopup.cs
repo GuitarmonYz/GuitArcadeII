@@ -18,14 +18,13 @@ public class displayPopup : MonoBehaviour {
 	{
 		displayInfo = true;
 		if (this.gameObject.name == "Safe") {
-			GlobalControl.Instance.seen[0] = true;
+			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kCirFifth] = true;
 		}
 		if (this.gameObject.name == "desktop_computer") {
-			GlobalControl.Instance.seen[1] = true;
+			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kRhythm] = true;
 		}
 		if (this.gameObject.name == "gameboy") {
-			Debug.Log("Mouse over gameboy");
-			GlobalControl.Instance.seen[2] = true;
+			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kMelody] = true;
 		}
 	}
 	
@@ -33,13 +32,13 @@ public class displayPopup : MonoBehaviour {
 	{
 		displayInfo = false;	
 		if (this.gameObject.name == "Safe") {
-			GlobalControl.Instance.seen[0] = false;
+			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kCirFifth] = false;
 		}
 		if (this.gameObject.name == "desktop_computer") {
-			GlobalControl.Instance.seen[1] = false;
+			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kRhythm] = false;
 		}
 		if (this.gameObject.name == "gameboy") {
-			GlobalControl.Instance.seen[1] = false;
+			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kMelody] = false;
 		}
 	}
 

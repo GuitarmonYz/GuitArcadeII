@@ -37,7 +37,6 @@ public class wu_PlayerController : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		rigidbody = GetComponent<Rigidbody2D>();
 		rayEye = transform.GetChild(0).gameObject;
-		// rayEye_bullet = transform.GetChild(1).gameObject;
 		cameraController = _camera.GetComponent<wu_CameraController>();
 		analyser = GetComponent<wu_MusicAnalysis>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
@@ -111,7 +110,6 @@ public class wu_PlayerController : MonoBehaviour {
 
 	public void jumpToNextStage() {
 		if (nextFloor != curFloor) {
-			// Debug.Log("jump to next stage");
 			Vector2 start = new Vector2(transform.position.x, transform.position.y);
 			Vector2 target;
 			if (curFloor%2 == 0) {
@@ -123,7 +121,6 @@ public class wu_PlayerController : MonoBehaviour {
 			float gravity = Physics2D.gravity.magnitude;
 			float angle = initAngle * Mathf.Deg2Rad;
 			float x_distance = Mathf.Abs(start.x - target.x);
-			// Debug.Log(x_distance);
 			float y_offset = start.y - target.y;
 			float initVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(x_distance, 2)) / (x_distance * Mathf.Tan(angle) + y_offset));
 			Vector2 finalVelocity = new Vector2(initVelocity * Mathf.Sin(angle) * (start.x > target.x ? -1 : 1), initVelocity * Mathf.Cos(angle));
@@ -138,7 +135,6 @@ public class wu_PlayerController : MonoBehaviour {
 	public void moveToNextStage() {
 		setAttackState(false);
 		animator.SetBool("jump", false);
-		// Debug.Log(rigidbody.velocity.x);
 		if (curFloor%2 == 0) {
 			if (!faceRight) {
 				Flip();

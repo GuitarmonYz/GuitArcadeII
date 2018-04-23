@@ -8,6 +8,7 @@ using MidiJack;
 public class Manager : MonoBehaviour {
 	Queue<char> key_input = new Queue<char>();
 	public Text text;
+	public Image panelObject;
 	public Image flag;
 	private bool colorLerp = true;
 	string move = "move";
@@ -106,24 +107,32 @@ public class Manager : MonoBehaviour {
 			player_controller.stop();
 			if (mentor_controller != null) mentor_controller.stop();
 		}
-		if (Input.GetKey("f")){
-			Debug.Log("fire");
-			boss_controller.attack(0);
-		}
-		if (Input.GetKey("r")){
-			boss_controller.attack(1);
-		}
+		// if (Input.GetKey("f")){
+		// 	Debug.Log("fire");
+		// 	boss_controller.attack(0);
+		// }
+		// if (Input.GetKey("r")){
+		// 	boss_controller.attack(1);
+		// }
 		if (Input.GetKey("p")){
 			bt_source.Play();
 			metro.Play();
 		}
+		if (Input.GetKey("f")) {
+			bt_source.Stop();
+			metro.Stop();
+			GlobalControl.Instance.completed[(int)GlobalControl.Stages.kRhythm] = true;
+			panelObject.rectTransform.sizeDelta = new Vector2(314,410);
+			text.rectTransform.sizeDelta = new Vector2(253, 250);
+			text.text = "Cool, you have passed my rhythm test, now find the dial in the room, and try to play around the circle to resolve the chords";
+			// text.text = "haha";
+		}
+		if (Input.GetKey("k")) {
+			SceneManager.LoadScene(0);
+		}
 	}
 
 	public string checkProgress(){
-		// if (curInstruction >= 2) {
-		// 	SceneManager.LoadScene(0);
-		// 	return null;
-		// }
 		return instruction_map[curInstruction];
 	}
 
