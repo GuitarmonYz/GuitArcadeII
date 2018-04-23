@@ -9,9 +9,10 @@ public class wu_PlayerController : MonoBehaviour {
 	public GameObject _camera; // moving camera
 	public float speed = 1f; // moving speed
 	public GameObject sheild;
+	public GameObject rock;
 	[HideInInspector] public Vector2 curEnemyPos;
 	[HideInInspector] public bool enemyAlive = false;
-	
+	private GameObject cur_rock;	
 	private Animator animator;
 	private Rigidbody2D rigidbody;
 	private GameObject rayEye; // for enemy raycasting
@@ -73,6 +74,17 @@ public class wu_PlayerController : MonoBehaviour {
 				Debug.Log("bar begin");
 				analyser.setBarBegin(Time.time);
 				curBarSetted = true;
+			}
+		}
+		int curBar = analyser.getCurBar();
+		// Debug.Log(curBar);
+		if (curBar>5 && curBar%2 == 0) {
+			float yPos = 2.5f - (curBar-2) * 3.9f + 0.5f;
+			if (cur_rock == null) {
+				cur_rock = Instantiate(rock, new Vector3(-6f, yPos, 0), Quaternion.identity);
+				wu_rockController rc = cur_rock.GetComponent<wu_rockController>();
+				// rc.setVelocity();
+				rc.setInitFloor(curBar-2);
 			}
 		}
 		if (cur_sheild != null) {
@@ -273,7 +285,13 @@ public class wu_PlayerController : MonoBehaviour {
 	public bool checkCorretness() {
 		int curChordPos = curFloor%4;
 		string curChord = chordList[curChordPos];
-		return analyser.checkChordCorrect(curChord);
+		int curBar = analyser.getCurBar();
+		if (curBar < 5) {
+			return analyser.checkChordCorrect(curChord);
+		} else {
+			return analyser.checkScaleCorrect();
+		}
+		// return analyser.checkChordCorrect(curChord);
 	}
 
 	public float getAttackSpeed() {

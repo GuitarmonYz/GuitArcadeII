@@ -11,12 +11,14 @@ public class wu_MusicAnalysis : MonoBehaviour {
 	private HashSet<int> MajorChord;
 	private HashSet<int> MinChord;
 	private HashSet<int> M7Chord;
+	private HashSet<int> ScaleTone;
 	private float dequeueCycle = 3;
 	private float nextDequeueTime;
 	private float curBarTime = 0;
 	private int curBar = 0;
 	private GameObject player;
 	private wu_PlayerController playerController;
+	private bool emphasis = false;
 	void Awake()
 	{
 		player = GameObject.FindGameObjectWithTag("Player");
@@ -44,6 +46,9 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		MinChord = new HashSet<int>(){
 			0, 2, 5, 9
 		};
+		ScaleTone = new HashSet<int>(){
+			0, 2, 4, 5, 7, 9, 11
+		};
 		nextDequeueTime = Time.time + dequeueCycle;
 	}
 	void Update () {
@@ -67,6 +72,19 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			buffer.Enqueue(newVal);
 		}
 	}
+
+	public bool checkScaleCorrect() {
+		if (buffer.Count == 0) return false;
+		bool res = true;
+		foreach(int num in buffer) {
+			res = res && ScaleTone.Contains(num%12);
+		}
+		return res;
+	}
+	public int getCurBar(){
+		return curBar;
+	}
+
 	public bool checkChordCorrect(string chord){
 		if (buffer.Count == 0) return false;
 		int chordMidiNum = (chord.Length == 1) ? midiNumDict[chord] : midiNumDict[chord.Substring(0,1)];
@@ -109,6 +127,8 @@ public class wu_MusicAnalysis : MonoBehaviour {
 				}
 			}
 		}
+		// Debug.Log(curBar);
+		checkEmphasis();
 		curBarBuffer.Clear();
 		buffer.Clear();
 		curBar++;
@@ -120,6 +140,50 @@ public class wu_MusicAnalysis : MonoBehaviour {
 		}
 		weights[weights.Length-1] = barEndTime - buffer[buffer.Count-1][0,0];
 		return weights;
+	}
+
+	private void checkEmphasis(){
+		if (curBarBuffer.Count == 0) return;
+		float targetWeight = 0;
+		float count = 0;
+		if ((curBar-1)%4 < 1) {
+			Debug.Log("Dm");
+			foreach(float[,] pair in curBarBuffer) {
+				Debug.Log(pair[0,1]%12);
+				if (pair[0,1]%12 == 0) {
+					targetWeight += pair[0,0];
+					count++;
+				}
+			}
+		}
+		if ((curBar-1)%4 == 1) {
+			Debug.Log("G");
+			foreach(float[,] pair in curBarBuffer) {
+				if (pair[0,1]%12 == 4){
+					targetWeight += pair[0,0];
+					count++;
+				}
+			}
+		}
+		if ((curBar-1)%4 > 1) {
+			Debug.Log("C");
+			foreach(float[,] pair in curBarBuffer) {
+				if (pair[0,1]%12 == 11) {
+					targetWeight += pair[0,0];
+					count++;
+				}
+			}
+		}
+		if (targetWeight/count > 7.4/curBarBuffer.Count) {
+			emphasis = true;
+		} else {
+			emphasis = false;
+		}
+		Debug.Log("emph:" + emphasis);
+	}
+
+	public bool getEmph(){
+		return emphasis;
 	}
 
 	private void CalculateEMD(List<float[,]> bf_1, List<float[,]> bf_2, float barEndTime){
