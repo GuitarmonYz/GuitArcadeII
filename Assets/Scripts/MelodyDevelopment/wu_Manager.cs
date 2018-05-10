@@ -23,6 +23,7 @@ public class wu_Manager : MonoBehaviour {
 		stateController = wu_player.GetComponent<StateController>();
 		metronome = GetComponent<wu_metronome>();
 		songAudioSource = GetComponents<AudioSource>()[0];
+
 		initMap(chordList);
 		stateController.SetupAI(playerController);
 	}
@@ -32,7 +33,7 @@ public class wu_Manager : MonoBehaviour {
 			metronome.Play();
 		}
 		if (playerController.barEnd()) {
-			if (barEnded == false) {
+			if (!barEnded) {
 				barEnded = true;
 				if (curBar != 0) {
 					GameObject popedEnemy = (GameObject)enemyQueue.Dequeue();

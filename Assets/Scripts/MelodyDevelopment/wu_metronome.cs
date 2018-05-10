@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using UnityEngine.UI;
 using System.Runtime.InteropServices;
 
 public class wu_metronome : MonoBehaviour {
@@ -216,33 +215,4 @@ public class wu_metronome : MonoBehaviour {
 	public List<double> getSongTickTimes(){
 		return this.songTickTimes;
 	}
-
-	// Tick Time (execute here all what you want)
-	// IEnumerator OnTick () {
-	// 	// Play Audio Tick
-	// 	metronomeAudioSource.Play ();
-	// 	// YOUR FUNCTIONS HERE
-		
-	// 	if (CurrentTick >= barOffset * Step){
-	// 		if ((CurrentTick - barOffset * Step - 1) % (roundLength * Step * 2) == 0){
-	// 			if (CurrentTick != barOffset * Step + 1) musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
-				
-	// 		}
-	// 	}
-
-	// 	if ((CurrentTick-5)%8 == 0){
-	// 		//Debug.Log(CurrentTick);
-	// 		if (CurrentTick == 5){
-	// 			Debug.Log("input start");
-	// 			musicAnalysis.input_lock = false;
-	// 		}else{
-	// 			Debug.Log("analysis start");
-	// 			musicAnalysis.analysisMusic(CurrentTick, songTickTimes);
-	// 		}
-			
-	// 	}
-
-	// 	//Debug.Log ("Current Step: " + CurrentStep + "/" + Step);
-	// 	yield return null;
-	// }
 }

@@ -31,7 +31,7 @@ public class wu_rockController : MonoBehaviour {
 		}
 		if (other.gameObject.CompareTag("Player")) {
 			if (!musicAnalysis.getEmph()) {
-				Debug.Log("take rock damage");
+				// Debug.Log("take rock damage");
 				playerController.takeDamage(5);
 			}
 			Destroy(this.gameObject);

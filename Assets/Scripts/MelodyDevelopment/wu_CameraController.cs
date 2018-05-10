@@ -12,11 +12,9 @@ public class wu_CameraController : MonoBehaviour {
 		startPosY = transform.position.y - 6.8f - 1;
 	}
 	
-	// Update is called once per frame
 	void LateUpdate () {
-		if (downSwitch) {
+		if (downSwitch)
 			DownMoveScreen();
-		}
 	}
 	void DownMoveScreen () {
 		if (transform.position.y > startPosY) {

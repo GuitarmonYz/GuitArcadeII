@@ -117,17 +117,14 @@ public class wu_MusicAnalysis : MonoBehaviour {
 			}
 			if (preBarIdx < 4) {
 				if (history[preBarIdx + 4].Count != 0 && history[preBarIdx].Count != 0) {
-					Debug.Log("start calculating EMD");
 					CalculateEMD(history[preBarIdx], history[preBarIdx + 4], barEndTime);
 				}
 			} else {
 				if (history[preBarIdx - 4].Count != 0 && history[preBarIdx].Count != 0) {
-					Debug.Log("Start calculating EMD");
 					CalculateEMD(history[preBarIdx], history[preBarIdx - 4], barEndTime);
 				}
 			}
 		}
-		// Debug.Log(curBar);
 		checkEmphasis();
 		curBarBuffer.Clear();
 		buffer.Clear();

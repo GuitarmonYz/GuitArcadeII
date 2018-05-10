@@ -63,13 +63,6 @@ public class wu_PlayerController : MonoBehaviour {
 		} else if (spriteRenderer.color != Color.white) {
 			spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, 0.1f);
 		}
-		if (Input.GetKey("o")) {
-			animator.speed = 0.5f;
-			attackSpeed = 0.75f;
-		} else {
-			animator.speed = 1;
-			attackSpeed = 0.5f;
-		}
 		if (barBegin()) {
 			if (!curBarSetted) {
 				Debug.Log("bar begin");
@@ -78,13 +71,11 @@ public class wu_PlayerController : MonoBehaviour {
 			}
 		}
 		int curBar = analyser.getCurBar();
-		// Debug.Log(curBar);
 		if (curBar>5 && curBar%2 == 0) {
 			float yPos = 2.5f - (curBar-2) * 3.9f + 0.5f;
 			if (cur_rock == null) {
 				cur_rock = Instantiate(rock, new Vector3(-6f, yPos, 0), Quaternion.identity);
 				wu_rockController rc = cur_rock.GetComponent<wu_rockController>();
-				// rc.setVelocity();
 				degreeText.color = new Color(degreeText.color.r, degreeText.color.g, degreeText.color.b, 255);
 				rc.setInitFloor(curBar-2);
 			}
