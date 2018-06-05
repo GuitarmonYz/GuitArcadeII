@@ -13,9 +13,8 @@ public class MonsterAnimatorController : MonoBehaviour {
 	}
 	
 	public void fire(){
-		GameObject new_fireBall = Instantiate(fireBall, fireMarker.transform);
-		fireballController fc = new_fireBall.GetComponent<fireballController>();
-		fc.setPlayerLocation(Player.transform.position);
+		// GameObject new_fireBall = Instantiate(fireBall, fireMarker.transform);
+		// fc.setPlayerLocation(Player.transform.position);
 	}
 
 	public void holdPrepare(){
