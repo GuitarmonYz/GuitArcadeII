@@ -18,6 +18,7 @@ public class displayPopup : MonoBehaviour {
 	{
 		displayInfo = true;
 		if (this.gameObject.name == "Safe") {
+			Debug.Log("safe");
 			GlobalControl.Instance.seen[(int)GlobalControl.Stages.kCirFifth] = true;
 		}
 		if (this.gameObject.name == "desktop_computer") {

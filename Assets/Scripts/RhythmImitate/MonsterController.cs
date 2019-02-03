@@ -8,12 +8,11 @@ public class MonsterController : MonoBehaviour {
 	private Vector2 curPos;
 	private float idelTime;
 	public GameObject player;
+	public GameObject fireBall;
 	private bool prepare;
 	private bool isIdel;
 	private bool isMoving;
 	private Animator animator;
-
-	// public int speed = 20;
 
 	// Use this for initialization
 	void Start () {
@@ -119,6 +118,11 @@ public class MonsterController : MonoBehaviour {
 		if (prepare){
 			Debug.Log("fire");
 			animator.SetTrigger("Fire");
+			Vector2 curPos = this.transform.position;
+			Vector2 tarPos = new Vector2(curPos.x - 2.24f, curPos.y + 0.43f);
+			GameObject new_fireBall = Instantiate(fireBall,tarPos,Quaternion.identity);
+			fireBallController fc = new_fireBall.GetComponent<fireBallController>();
+			fc.setPlayerPos(player.transform.position);
 			this.prepare = false;
 			this.actioning = false;
 		}

@@ -128,6 +128,7 @@ public class Manager : MonoBehaviour {
 			// text.text = "haha";
 		}
 		if (Input.GetKey("k")) {
+			GlobalControl.Instance.completed[(int)GlobalControl.Stages.kRhythm] = true;
 			SceneManager.LoadScene(0);
 		}
 	}

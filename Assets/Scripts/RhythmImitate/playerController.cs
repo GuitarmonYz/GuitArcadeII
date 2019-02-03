@@ -91,7 +91,7 @@ public class playerController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		Debug.Log("trigger");
+		// Debug.Log("trigger");
 		if (other.gameObject.CompareTag("fireball")){
 			this.health -= 10;
 			content.fillAmount = health/100.0f;
